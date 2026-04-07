@@ -7,55 +7,26 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
-            --primary: #3b82f6;
-            --bg-dark: #0f172a;
-            --bg-card: #1e293b;
-            --text-light: #f8fafc;
-            --accent: #10b981;
-            --danger: #ef4444;
-            --running: #ea580c;
+            --primary: #3b82f6; --bg-dark: #0f172a; --bg-card: #1e293b;
+            --text-light: #f8fafc; --accent: #10b981; --danger: #ef4444;
+            --running: #ea580c; --warning: #eab308;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-dark);
-            color: var(--text-light);
-            margin: 0;
-            padding: 15px;
-            padding-bottom: 80px; 
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background-color: var(--bg-dark); color: var(--text-light);
+            margin: 0; padding: 15px; padding-bottom: 80px;
         }
 
         h1, h2, h3 { text-align: center; margin-top: 5px; }
-
-        .card {
-            background-color: var(--bg-card);
-            padding: 15px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-        }
-
-        input[type="number"] {
-            padding: 8px;
-            border-radius: 5px;
-            border: 1px solid #475569;
-            background: #334155;
-            color: white;
-            text-align: center;
-        }
-
-        button {
-            padding: 10px 15px;
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        .weight-tracker { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 10px; }
-        .chart-container { position: relative; height: 200px; width: 100%; margin-top: 10px; display: none; }
+        .card { background-color: var(--bg-card); padding: 15px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+        
+        input[type="number"] { padding: 8px; border-radius: 5px; border: 1px solid #475569; background: #334155; color: white; text-align: center; width: 70px; }
+        button { padding: 10px 15px; background-color: var(--primary); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        .btn-small { padding: 5px 10px; font-size: 0.8em; }
+        
+        .data-tools { display: flex; justify-content: space-between; margin-bottom: 15px; gap: 10px; }
+        .data-tools button { flex: 1; background-color: #475569; }
 
         .tabs { display: flex; overflow-x: auto; gap: 10px; padding-bottom: 10px; margin-bottom: 15px; }
         .tablink { flex: 0 0 auto; background-color: #334155; padding: 10px 15px; border-radius: 8px; transition: 0.3s; }
@@ -65,72 +36,69 @@
 
         .progress-wrapper { background: #334155; border-radius: 10px; height: 15px; margin-bottom: 20px; overflow: hidden; }
         .progress-bar { height: 100%; background: var(--accent); width: 0%; transition: width 0.4s ease; }
-
         .exercise-card { background-color: var(--bg-card); padding: 15px; border-radius: 10px; margin-bottom: 15px; border-left: 4px solid var(--primary); }
         .exercise-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
         .exercise-header h4 { margin: 0; color: var(--primary); }
-        .exercise-settings { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
+        .exercise-inputs { display: flex; gap: 10px; align-items: center; margin-bottom: 10px; flex-wrap: wrap; }
         
         .sets-container { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
         .set-checkbox { display: none; }
         .set-label { width: 35px; height: 35px; border-radius: 50%; border: 2px solid var(--primary); display: flex; align-items: center; justify-content: center; cursor: pointer; font-weight: bold; transition: 0.2s; }
         .set-checkbox:checked + .set-label { background-color: var(--primary); color: white; }
 
-        .running-card { border-left-color: var(--running); }
-        .running-card h4 { color: var(--running); }
-        .run-stats { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
-        .run-stats div { display: flex; flex-direction: column; font-size: 0.8em; }
-
-        .rpe-container { text-align: center; margin-top: 20px; padding-top: 20px; border-top: 1px solid #334155; }
-        .rpe-buttons { display: flex; justify-content: center; gap: 10px; margin-top: 10px; }
-        .rpe-btn { background: #334155; padding: 10px; border-radius: 5px; width: 40px; }
-        .rpe-btn.active { background: var(--accent); }
-
-        #timer-widget {
-            position: fixed; bottom: 20px; right: 20px; background: var(--danger); color: white; padding: 15px 25px; border-radius: 50px; font-size: 1.5rem; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.5); display: none; align-items: center; gap: 10px; z-index: 1000;
-        }
+        #timer-widget { position: fixed; bottom: 20px; right: 20px; background: var(--danger); color: white; padding: 15px 25px; border-radius: 50px; font-size: 1.5rem; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.5); display: none; align-items: center; gap: 10px; z-index: 1000; }
         #timer-widget button { background: white; color: var(--danger); padding: 5px 10px; font-size: 1rem; }
+
+        .chart-container { position: relative; height: 200px; width: 100%; margin-top: 10px; display: none; }
         
-        .btn-history { font-size: 0.8em; background: #475569; padding: 5px 10px; }
-        .btn-save-day { width: 100%; margin-top: 20px; padding: 15px; font-size: 1.2em; background-color: var(--accent); }
+        #save-status { text-align: center; font-size: 0.8em; color: var(--accent); margin-top: 10px; min-height: 15px; }
     </style>
 </head>
 <body>
 
-    <h1>🔥 FitTracker Pro</h1>
+    <h1>⚡ FitTracker Elite</h1>
+
+    <div class="data-tools">
+        <button onclick="exportData()">⬇️ Exporter (Sauvegarde)</button>
+        <button onclick="document.getElementById('import-file').click()">⬆️ Importer</button>
+        <input type="file" id="import-file" style="display:none" accept=".json" onchange="importData(event)">
+    </div>
 
     <div class="card">
-        <h3>Mon Poids</h3>
-        <div class="weight-tracker">
-            <input type="number" id="body-weight" placeholder="Poids (kg)" step="0.1">
-            <button onclick="saveBodyWeight()">Ajouter</button>
-            <button onclick="toggleChart('body-weight-chart')" class="btn-history">Graphique</button>
+        <h3>🎯 Outils Avancés</h3>
+        <div style="display: flex; gap: 10px; align-items: center; justify-content: center; margin-bottom: 15px;">
+            <input type="number" id="rm-w" placeholder="Poids" oninput="calcRM()">
+            <span>kg ×</span>
+            <input type="number" id="rm-r" placeholder="Reps" oninput="calcRM()">
+            <strong style="color:var(--warning); font-size:1.2em;">= <span id="rm-result">0</span> kg (1RM)</strong>
         </div>
-        <div class="chart-container" id="container-body-weight-chart">
-            <canvas id="body-weight-chart"></canvas>
+        <hr style="border-color: #334155; margin: 15px 0;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div><strong>Volume Total du Jour :</strong> <span id="daily-volume" style="color:var(--accent);">0</span> kg</div>
+            <button class="btn-small" onclick="toggleChart('volume-chart')">Graphique Volume</button>
         </div>
+        <div class="chart-container" id="container-volume-chart"><canvas id="volume-chart"></canvas></div>
     </div>
 
     <div class="tabs">
         <button class="tablink active" onclick="openDay(event, 'Lundi')">Lun</button>
         <button class="tablink" onclick="openDay(event, 'Mardi')">Mar</button>
-        <button class="tablink" onclick="openDay(event, 'Mercredi')">Mer</button>
-        <button class="tablink" onclick="openDay(event, 'Jeudi')">Jeu</button>
-        <button class="tablink" onclick="openDay(event, 'Vendredi')">Ven</button>
     </div>
 
+    <div id="save-status"></div>
+    
     <div id="Lundi" class="tabcontent" style="display:block;" data-has-run="false">
         <h2>Pecs & Triceps</h2>
         <div class="progress-wrapper"><div class="progress-bar" id="prog-Lundi"></div></div>
 
-        <div class="exercise-card">
+        <div class="exercise-card" data-exo="lundi-1">
             <div class="exercise-header">
-                <h4>Développé couché</h4>
-                <button class="btn-history" onclick="toggleChart('chart-lundi-1')">Évolution</button>
+                <h4>Développé couché (4x8-10)</h4>
+                <button class="btn-small" onclick="toggleChart('chart-lundi-1')">Évolution</button>
             </div>
-            <div class="exercise-settings">
-                <input type="number" id="w-lundi-1" placeholder="Charge (kg)">
-                <span>4 x 8-10 reps</span>
+            <div class="exercise-inputs">
+                <input type="number" class="w-input" id="w-lundi-1" placeholder="Charge" oninput="autoSave()"> kg
+                <input type="number" class="r-input" id="r-lundi-1" placeholder="Reps" oninput="autoSave()" value="8"> reps/série
             </div>
             <div class="sets-container" data-day="Lundi">
                 <input type="checkbox" id="l1-s1" class="set-checkbox" onchange="handleSetChange(this)"><label for="l1-s1" class="set-label">1</label>
@@ -141,14 +109,14 @@
             <div class="chart-container" id="container-chart-lundi-1"><canvas id="chart-lundi-1"></canvas></div>
         </div>
 
-        <div class="exercise-card">
+        <div class="exercise-card" data-exo="lundi-2">
             <div class="exercise-header">
-                <h4>Développé incliné haltères</h4>
-                <button class="btn-history" onclick="toggleChart('chart-lundi-2')">Évolution</button>
+                <h4>Développé incliné haltères (3x10-12)</h4>
+                <button class="btn-small" onclick="toggleChart('chart-lundi-2')">Évolution</button>
             </div>
-            <div class="exercise-settings">
-                <input type="number" id="w-lundi-2" placeholder="Charge (kg)">
-                <span>3 x 10-12 reps</span>
+            <div class="exercise-inputs">
+                <input type="number" class="w-input" id="w-lundi-2" placeholder="Charge" oninput="autoSave()"> kg
+                <input type="number" class="r-input" id="r-lundi-2" placeholder="Reps" oninput="autoSave()" value="10"> reps/série
             </div>
             <div class="sets-container" data-day="Lundi">
                 <input type="checkbox" id="l2-s1" class="set-checkbox" onchange="handleSetChange(this)"><label for="l2-s1" class="set-label">1</label>
@@ -157,46 +125,28 @@
             </div>
             <div class="chart-container" id="container-chart-lundi-2"><canvas id="chart-lundi-2"></canvas></div>
         </div>
-        
-        <div class="rpe-container">
-            <h4>Ressenti Séance (RPE)</h4>
-            <div class="rpe-buttons" id="rpe-Lundi">
-                <button class="rpe-btn" onclick="selectRPE('Lundi', 1)">1</button>
-                <button class="rpe-btn" onclick="selectRPE('Lundi', 2)">2</button>
-                <button class="rpe-btn" onclick="selectRPE('Lundi', 3)">3</button>
-                <button class="rpe-btn" onclick="selectRPE('Lundi', 4)">4</button>
-                <button class="rpe-btn" onclick="selectRPE('Lundi', 5)">5</button>
-            </div>
-        </div>
-        <button class="btn-save-day" onclick="saveDay('Lundi')">💾 Valider ma séance</button>
     </div>
 
     <div id="Mardi" class="tabcontent" data-has-run="true">
         <h2>Dos, Biceps & Running</h2>
         <div class="progress-wrapper"><div class="progress-bar" id="prog-Mardi"></div></div>
 
-        <div class="exercise-card running-card">
-            <h4>🏃‍♂️ Fractionné HIIT</h4>
-            <p style="font-size: 0.9em; margin: 5px 0;">10m chauffe + (30s Sprint / 30s Marche) x15</p>
-            <div class="run-stats">
-                <div><label>Dist. (km)</label><input type="number" id="run-m-dist" step="0.1" style="width:60px"></div>
-                <div><label>Temps (min)</label><input type="number" id="run-m-time" style="width:60px"></div>
-                <div>
-                    <label>Fait ?</label>
-                    <input type="checkbox" id="run-m-done" class="set-checkbox run-check" onchange="updateProgress('Mardi')">
-                    <label for="run-m-done" class="set-label" style="border-color:var(--running);">✓</label>
-                </div>
+        <div class="exercise-card" style="border-left-color: var(--running);">
+            <h4 style="color:var(--running); margin:0 0 10px 0;">🏃‍♂️ Fractionné HIIT</h4>
+            <div class="sets-container" data-day="Mardi">
+                <input type="checkbox" id="run-m-done" class="set-checkbox run-check" onchange="handleSetChange(this)">
+                <label for="run-m-done" class="set-label" style="border-color:var(--running); width:auto; padding:0 15px;">Séance Validée ✓</label>
             </div>
         </div>
 
-        <div class="exercise-card">
+        <div class="exercise-card" data-exo="mardi-1">
             <div class="exercise-header">
-                <h4>Tractions</h4>
-                <button class="btn-history" onclick="toggleChart('chart-mardi-1')">Évolution</button>
+                <h4>Tractions (4x8-10)</h4>
+                <button class="btn-small" onclick="toggleChart('chart-mardi-1')">Évolution</button>
             </div>
-            <div class="exercise-settings">
-                <input type="number" id="w-mardi-1" placeholder="Délest. (kg)">
-                <span>4 x 8-10 reps</span>
+            <div class="exercise-inputs">
+                <input type="number" class="w-input" id="w-mardi-1" placeholder="Poids" oninput="autoSave()"> kg
+                <input type="number" class="r-input" id="r-mardi-1" placeholder="Reps" oninput="autoSave()" value="8"> reps/série
             </div>
             <div class="sets-container" data-day="Mardi">
                 <input type="checkbox" id="m1-s1" class="set-checkbox" onchange="handleSetChange(this)"><label for="m1-s1" class="set-label">1</label>
@@ -206,18 +156,6 @@
             </div>
             <div class="chart-container" id="container-chart-mardi-1"><canvas id="chart-mardi-1"></canvas></div>
         </div>
-
-        <div class="rpe-container">
-            <h4>Ressenti Séance (RPE)</h4>
-            <div class="rpe-buttons" id="rpe-Mardi">
-                <button class="rpe-btn" onclick="selectRPE('Mardi', 1)">1</button>
-                <button class="rpe-btn" onclick="selectRPE('Mardi', 2)">2</button>
-                <button class="rpe-btn" onclick="selectRPE('Mardi', 3)">3</button>
-                <button class="rpe-btn" onclick="selectRPE('Mardi', 4)">4</button>
-                <button class="rpe-btn" onclick="selectRPE('Mardi', 5)">5</button>
-            </div>
-        </div>
-        <button class="btn-save-day" onclick="saveDay('Mardi')">💾 Valider ma séance</button>
     </div>
 
     <div id="timer-widget">
@@ -226,78 +164,115 @@
     </div>
 
     <script>
-        let db = JSON.parse(localStorage.getItem('fitTrackerDB')) || {
-            weights: {}, 
-            bodyWeight: [], 
-            rpe: {} 
+        let db = JSON.parse(localStorage.getItem('fitTrackerElite')) || {
+            weights: {}, volume: [], checkboxes: {}
         };
-
         const todayStr = new Date().toISOString().split('T')[0];
+        let saveTimeout;
 
-        function openDay(evt, dayName) {
-            document.querySelectorAll(".tabcontent").forEach(tab => tab.style.display = "none");
-            document.querySelectorAll(".tablink").forEach(link => link.classList.remove("active"));
-            document.getElementById(dayName).style.display = "block";
-            evt.currentTarget.classList.add("active");
-            updateProgress(dayName);
-        }
-
-        function updateProgress(dayName) {
-            const dayTab = document.getElementById(dayName);
-            if (!dayTab) return;
-
-            const hasRun = dayTab.getAttribute('data-has-run') === 'true';
-            const gymCheckboxes = dayTab.querySelectorAll('.sets-container .set-checkbox');
-            const gymChecked = dayTab.querySelectorAll('.sets-container .set-checkbox:checked');
-            const runCheckbox = dayTab.querySelector('.run-check');
-
-            let progress = 0;
-
-            if (hasRun && runCheckbox) {
-                let gymScore = gymCheckboxes.length > 0 ? (gymChecked.length / gymCheckboxes.length) * 50 : 0;
-                let runScore = runCheckbox.checked ? 50 : 0;
-                progress = gymScore + runScore;
-            } else {
-                progress = gymCheckboxes.length > 0 ? (gymChecked.length / gymCheckboxes.length) * 100 : 0;
+        function calcRM() {
+            const w = parseFloat(document.getElementById('rm-w').value);
+            const r = parseFloat(document.getElementById('rm-r').value);
+            if (w > 0 && r > 0) {
+                const rm = w * (1 + (r / 30));
+                document.getElementById('rm-result').innerText = rm.toFixed(1);
             }
-
-            document.getElementById(`prog-${dayName}`).style.width = `${progress}%`;
         }
 
-        let timerInterval;
-        let timeLeft = 180; 
+        function calculateVolume() {
+            let dailyTotal = 0;
+            document.querySelectorAll('.exercise-card').forEach(card => {
+                const wInput = card.querySelector('.w-input');
+                const rInput = card.querySelector('.r-input');
+                if (!wInput || !rInput) return;
+                
+                const w = parseFloat(wInput.value) || 0;
+                const r = parseFloat(rInput.value) || 0;
+                const checkedSets = card.querySelectorAll('.set-checkbox:checked').length;
+                
+                dailyTotal += (w * r * checkedSets);
+            });
+            
+            document.getElementById('daily-volume').innerText = dailyTotal.toFixed(0);
+
+            if(dailyTotal > 0) {
+                const lastEntry = db.volume.slice(-1)[0];
+                if (lastEntry && lastEntry.date === todayStr) {
+                    lastEntry.val = dailyTotal;
+                } else {
+                    db.volume.push({ date: todayStr, val: dailyTotal });
+                }
+            }
+        }
+
+        function autoSave() {
+            clearTimeout(saveTimeout);
+            document.getElementById('save-status').innerText = "Sauvegarde en cours...";
+            
+            saveTimeout = setTimeout(() => {
+                document.querySelectorAll('.w-input').forEach(input => {
+                    if (input.value) {
+                        if (!db.weights[input.id]) db.weights[input.id] = [];
+                        const lastEntry = db.weights[input.id].slice(-1)[0];
+                        if (lastEntry && lastEntry.date === todayStr) lastEntry.val = input.value;
+                        else db.weights[input.id].push({ date: todayStr, val: input.value });
+                    }
+                });
+
+                document.querySelectorAll('.set-checkbox').forEach(box => {
+                    db.checkboxes[box.id] = { checked: box.checked, date: todayStr };
+                });
+
+                calculateVolume();
+                localStorage.setItem('fitTrackerElite', JSON.stringify(db));
+                document.getElementById('save-status').innerText = "✓ Enregistré automatiquement";
+                setTimeout(() => document.getElementById('save-status').innerText = "", 2000);
+            }, 800);
+        }
 
         function handleSetChange(checkbox) {
             const dayName = checkbox.closest('.sets-container').getAttribute('data-day');
             updateProgress(dayName);
+            autoSave();
 
-            if (checkbox.checked) {
-                startTimer(180); 
-            }
+            if (checkbox.checked) startTimer(180);
+        }
+
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        
+        function playBeep() {
+            if(audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+            gain.gain.setValueAtTime(1, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1);
+            osc.start(audioCtx.currentTime);
+            osc.stop(audioCtx.currentTime + 1);
         }
 
         function startTimer(seconds) {
             clearInterval(timerInterval);
-            timeLeft = seconds;
+            let timeLeft = seconds;
             const widget = document.getElementById('timer-widget');
             const display = document.getElementById('timer-display');
             widget.style.display = 'flex';
             widget.style.backgroundColor = 'var(--danger)';
 
-            function updateDisplay() {
+            timerInterval = setInterval(() => {
+                timeLeft--;
                 let m = Math.floor(timeLeft / 60);
                 let s = timeLeft % 60;
                 display.innerText = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
-            }
-
-            updateDisplay();
-            timerInterval = setInterval(() => {
-                timeLeft--;
-                updateDisplay();
+                
                 if (timeLeft <= 0) {
                     clearInterval(timerInterval);
                     widget.style.backgroundColor = 'var(--accent)';
                     display.innerText = "GO !";
+                    playBeep();
                 }
             }, 1000);
         }
@@ -307,114 +282,93 @@
             document.getElementById('timer-widget').style.display = 'none';
         }
 
-        function selectRPE(day, value) {
-            const buttons = document.querySelectorAll(`#rpe-${day} .rpe-btn`);
-            buttons.forEach(btn => btn.classList.remove('active'));
-            buttons[value - 1].classList.add('active');
-            db.rpe[day] = value;
+        function openDay(evt, dayName) {
+            document.querySelectorAll(".tabcontent").forEach(tab => tab.style.display = "none");
+            document.querySelectorAll(".tablink").forEach(link => link.classList.remove("active"));
+            document.getElementById(dayName).style.display = "block";
+            evt.currentTarget.classList.add("active");
+            updateProgress(dayName);
+            calculateVolume();
         }
 
-        function saveDay(dayName) {
+        function updateProgress(dayName) {
             const dayTab = document.getElementById(dayName);
-            const inputs = dayTab.querySelectorAll('input[type="number"]');
-            
-            inputs.forEach(input => {
-                if (input.value && input.id) {
-                    if (!db.weights[input.id]) db.weights[input.id] = [];
-                    const lastEntry = db.weights[input.id].slice(-1)[0];
-                    if (lastEntry && lastEntry.date === todayStr) {
-                        lastEntry.val = input.value;
-                    } else {
-                        db.weights[input.id].push({ date: todayStr, val: input.value });
-                    }
+            if (!dayTab) return;
+            const checkBoxes = dayTab.querySelectorAll('.set-checkbox');
+            const checkedBoxes = dayTab.querySelectorAll('.set-checkbox:checked');
+            let progress = checkBoxes.length > 0 ? (checkedBoxes.length / checkBoxes.length) * 100 : 0;
+            document.getElementById(`prog-${dayName}`).style.width = `${progress}%`;
+        }
+
+        window.onload = () => {
+            document.querySelectorAll('.w-input').forEach(input => {
+                if (db.weights[input.id] && db.weights[input.id].length > 0) {
+                    input.value = db.weights[input.id].slice(-1)[0].val;
                 }
             });
-
-            localStorage.setItem('fitTrackerDB', JSON.stringify(db));
-            alert(`✅ Données de ${dayName} sauvegardées avec succès !`);
-            
-            inputs.forEach(input => {
-                if(input.id.startsWith('w-')) updateChart(`chart-${input.id.substring(2)}`, db.weights[input.id], 'Charge (kg)');
+            document.querySelectorAll('.set-checkbox').forEach(box => {
+                if (db.checkboxes[box.id] && db.checkboxes[box.id].date === todayStr) {
+                    box.checked = db.checkboxes[box.id].checked;
+                }
             });
+            updateProgress('Lundi');
+            calculateVolume();
+        };
+
+        function exportData() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(db));
+            const dlAnchorElem = document.createElement('a');
+            dlAnchorElem.setAttribute("href", dataStr);
+            dlAnchorElem.setAttribute("download", `FitTracker_Sauvegarde_${todayStr}.json`);
+            dlAnchorElem.click();
         }
 
-        function saveBodyWeight() {
-            const val = document.getElementById('body-weight').value;
-            if (!val) return;
-
-            const lastEntry = db.bodyWeight.slice(-1)[0];
-            if (lastEntry && lastEntry.date === todayStr) {
-                lastEntry.val = val;
-            } else {
-                db.bodyWeight.push({ date: todayStr, val: val });
-            }
-            localStorage.setItem('fitTrackerDB', JSON.stringify(db));
-            updateChart('body-weight-chart', db.bodyWeight, 'Poids (kg)', '#ea580c');
-            alert("⚖️ Poids sauvegardé !");
+        function importData(event) {
+            const file = event.target.files[0];
+            if(!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    db = JSON.parse(e.target.result);
+                    localStorage.setItem('fitTrackerElite', JSON.stringify(db));
+                    alert("✅ Données importées avec succès ! La page va se recharger.");
+                    location.reload();
+                } catch (err) {
+                    alert("❌ Erreur lors de l'importation du fichier.");
+                }
+            };
+            reader.readAsText(file);
         }
 
         let chartsInstances = {};
-
         function toggleChart(canvasId) {
             const container = document.getElementById(`container-${canvasId}`);
             if (container.style.display === 'block') {
                 container.style.display = 'none';
             } else {
                 container.style.display = 'block';
-                let dbKey;
-                let color = varPrimary = '#3b82f6';
-                if (canvasId === 'body-weight-chart') {
-                    dbKey = db.bodyWeight;
-                    color = '#ea580c';
+                let dataArr = [];
+                let color = '#3b82f6';
+                if (canvasId === 'volume-chart') {
+                    dataArr = db.volume; color = '#10b981';
                 } else {
                     const inputId = `w-${canvasId.replace('chart-', '')}`;
-                    dbKey = db.weights[inputId] || [];
+                    dataArr = db.weights[inputId] || [];
                 }
-                updateChart(canvasId, dbKey, 'Evolution', color);
+                
+                if(!dataArr || dataArr.length === 0) return;
+                const ctx = document.getElementById(canvasId).getContext('2d');
+                const labels = dataArr.map(item => item.date.slice(5));
+                const data = dataArr.map(item => parseFloat(item.val));
+
+                if (chartsInstances[canvasId]) chartsInstances[canvasId].destroy();
+                chartsInstances[canvasId] = new Chart(ctx, {
+                    type: 'bar',
+                    data: { labels: labels, datasets: [{ label: 'Évolution', data: data, backgroundColor: color }] },
+                    options: { responsive: true, maintainAspectRatio: false, scales: { y: { ticks: { color: '#cbd5e1' } }, x: { ticks: { color: '#cbd5e1' } } }, plugins: { legend: { display: false } } }
+                });
             }
         }
-
-        function updateChart(canvasId, dataArr, labelTxt, colorStr = '#3b82f6') {
-            if (!dataArr || dataArr.length === 0) return;
-            const ctx = document.getElementById(canvasId).getContext('2d');
-            
-            const labels = dataArr.map(item => item.date.slice(5)); 
-            const data = dataArr.map(item => parseFloat(item.val));
-
-            if (chartsInstances[canvasId]) chartsInstances[canvasId].destroy();
-
-            chartsInstances[canvasId] = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: labelTxt, data: data, borderColor: colorStr,
-                        backgroundColor: colorStr + '33', borderWidth: 2, fill: true, tension: 0.3
-                    }]
-                },
-                options: {
-                    responsive: true, maintainAspectRatio: false,
-                    scales: {
-                        y: { ticks: { color: '#cbd5e1' }, grid: { color: '#334155' } },
-                        x: { ticks: { color: '#cbd5e1' }, grid: { color: '#334155' } }
-                    },
-                    plugins: { legend: { labels: { color: '#f8fafc' } } }
-                }
-            });
-        }
-
-        window.onload = () => {
-            Object.keys(db.weights).forEach(key => {
-                const input = document.getElementById(key);
-                if (input && db.weights[key].length > 0) {
-                    input.value = db.weights[key].slice(-1)[0].val;
-                }
-            });
-            if (db.bodyWeight.length > 0) {
-                document.getElementById('body-weight').value = db.bodyWeight.slice(-1)[0].val;
-            }
-            updateProgress('Lundi'); 
-        };
     </script>
 </body>
 </html>
