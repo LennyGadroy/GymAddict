@@ -1,409 +1,68 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gym Addict</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        :root {
-            --primary: #3b82f6; --bg-dark: #0f172a; --bg-card: #1e293b;
-            --text-light: #f8fafc; --accent: #10b981; --danger: #ef4444;
-            --running: #ea580c; --warning: #eab308; --purple: #a855f7;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, sans-serif;
-            background-color: var(--bg-dark); color: var(--text-light);
-            margin: 0; padding: 15px; padding-bottom: 80px;
-        }
-
-        h1, h2, h3 { text-align: center; margin-top: 5px; }
-        .card { background-color: var(--bg-card); padding: 15px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
-        
-        input { padding: 8px; border-radius: 5px; border: 1px solid #475569; background: #334155; color: white; text-align: center; width: 70px; }
-        button { padding: 10px 15px; background-color: var(--primary); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
-        .btn-small { padding: 5px 10px; font-size: 0.8em; }
-        
-        .gamification-bar { display: flex; gap: 10px; margin-bottom: 15px; }
-        .stat-box { flex: 1; background: var(--bg-card); padding: 10px; border-radius: 12px; text-align: center; font-weight: bold; border-bottom: 4px solid var(--primary); box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
-        .stat-val { font-size: 1.8em; display: block; margin-top: 5px; }
-        .stat-streak { color: var(--running); border-bottom-color: var(--running); }
-        .stat-consist { color: var(--accent); border-bottom-color: var(--accent); }
-
-        .tools-grid { display: grid; grid-template-columns: 1fr; gap: 15px; }
-        .tool-section { padding: 12px; background: #334155; border-radius: 8px; }
-        .tool-row { display: flex; align-items: center; justify-content: space-between; margin-top: 8px; gap: 5px; }
-
-        .pr-item { display: flex; justify-content: space-between; background: #0f172a; padding: 8px; border-radius: 5px; margin-top: 5px; border-left: 3px solid var(--warning); }
-
-        .tabs { display: flex; overflow-x: auto; gap: 10px; padding-bottom: 10px; margin-bottom: 15px; }
-        .tablink { flex: 0 0 auto; background-color: #334155; padding: 10px 15px; border-radius: 8px; transition: 0.3s; }
-        .tablink.active { background-color: var(--primary); }
-        .tablink-stats { background-color: var(--purple); }
-        .tablink-stats.active { background-color: #9333ea; }
-        .tabcontent { display: none; animation: fadeEffect 0.4s; }
-        @keyframes fadeEffect { from {opacity: 0;} to {opacity: 1;} }
-
-        .progress-wrapper { background: #334155; border-radius: 10px; height: 15px; margin-bottom: 20px; overflow: hidden; }
-        .progress-bar { height: 100%; background: var(--accent); width: 0%; transition: width 0.4s ease; }
-        .exercise-card { background-color: var(--bg-card); padding: 15px; border-radius: 10px; margin-bottom: 15px; border-left: 4px solid var(--primary); }
-        .exercise-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
-        .exercise-header h4 { margin: 0; color: var(--primary); }
-        .exercise-inputs { display: flex; gap: 10px; align-items: center; margin-bottom: 10px; flex-wrap: wrap; }
-        
-        .sets-container { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
-        .set-checkbox { display: none; }
-        .set-label { width: 35px; height: 35px; border-radius: 50%; border: 2px solid var(--primary); display: flex; align-items: center; justify-content: center; cursor: pointer; font-weight: bold; transition: 0.2s; }
-        .set-checkbox:checked + .set-label { background-color: var(--primary); color: white; }
-
-        #timer-widget { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--danger); color: white; padding: 10px 20px; border-radius: 50px; font-size: 1.5rem; font-weight: bold; box-shadow: 0 4px 15px rgba(0,0,0,0.5); display: none; align-items: center; gap: 15px; z-index: 1000; width: max-content; }
-        #timer-widget button { background: rgba(255,255,255,0.2); color: white; padding: 5px 10px; font-size: 1rem; border-radius: 8px; border: 1px solid white; }
-        
-        .chart-container { position: relative; height: 250px; width: 100%; margin-top: 10px; }
-        #save-status { text-align: center; font-size: 0.8em; color: var(--accent); margin-top: 5px; min-height: 15px; }
-
-        #pr-notification { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: var(--warning); color: #0f172a; padding: 15px 25px; border-radius: 10px; font-weight: bold; z-index: 9999; display: none; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Gym Addict</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <h1>🧠 Coach Data</h1>
-    
-    <div id="pr-notification">🏆 NOUVEAU RECORD PERSONNEL !</div>
-    <div id="save-status"></div>
+<header class="hdr">
+  <div>
+    <div class="logo">⚡ FITCORE</div>
+    <span class="logo-sub">HYBRID TRACKER</span>
+  </div>
+  <div class="hdr-right">
+    <div class="streak" id="streakBadge">🔥 0j</div>
+    <div class="reg" id="regBadge">—%</div>
+    <div class="save-ind" id="saveInd">✓ Enregistré</div>
+  </div>
+</header>
 
-    <div class="tabs">
-        <button class="tablink tablink-stats active" onclick="openTab(event, 'Stats')">📊 Dashboard</button>
-        <button class="tablink" onclick="openTab(event, 'Lundi')">Lun</button>
-        <button class="tablink" onclick="openTab(event, 'Mardi')">Mar</button>
-    </div>
+<div class="tab active" id="tab-today">
+  <div id="today-content"></div>
+</div>
 
-    <div id="Stats" class="tabcontent" style="display:block;">
-        
-        <div class="gamification-bar">
-            <div class="stat-box stat-streak">🔥 Série<span class="stat-val"><span id="streak-count">0</span> j</span></div>
-            <div class="stat-box stat-consist">🎯 Régularité<span class="stat-val"><span id="consistency-score">0</span>%</span></div>
-        </div>
+<div class="tab" id="tab-week">
+  <div id="week-content"></div>
+</div>
 
-        <div class="card">
-            <h3>🕸️ Radar Musculaire</h3>
-            <p style="font-size:0.8em; text-align:center; color:#cbd5e1;">Volume par groupe musculaire (kg)</p>
-            <div class="chart-container"><canvas id="radar-chart"></canvas></div>
-        </div>
+<div class="tab" id="tab-stats">
+  <div id="stats-content"></div>
+</div>
 
-        <div class="card">
-            <h3>🏆 Panthéon des Records (PR)</h3>
-            <div id="pr-list" style="margin-top: 10px;">
-                <p style="font-size:0.9em; text-align:center;">Entraîne-toi pour voir tes records apparaître ici !</p>
-            </div>
-        </div>
+<div class="tab" id="tab-cardio">
+  <div id="cardio-content"></div>
+</div>
 
-        <div class="card tools-grid">
-            <h3>🫀 Zones Cardio (BPM)</h3>
-            <div class="tool-section">
-                <div class="tool-row">
-                    <span>Mon Âge :</span>
-                    <input type="number" id="age-input" placeholder="Âge" oninput="calcZones()">
-                </div>
-                <div style="font-size: 0.9em; margin-top: 10px; display: grid; gap: 5px;">
-                    <div style="display:flex; justify-content:space-between; color:var(--accent);"><span>Zone 2 (Brûle Graisse) :</span> <strong id="z2-res">-</strong></div>
-                    <div style="display:flex; justify-content:space-between; color:var(--warning);"><span>Zone 3 (Endurance Active) :</span> <strong id="z3-res">-</strong></div>
-                    <div style="display:flex; justify-content:space-between; color:var(--running);"><span>Zone 4 (Seuil) :</span> <strong id="z4-res">-</strong></div>
-                    <div style="display:flex; justify-content:space-between; color:var(--danger);"><span>Zone 5 (HIIT / VMA) :</span> <strong id="z5-res">-</strong></div>
-                </div>
-            </div>
-        </div>
-    </div>
+<div class="tmr" id="timerWidget">
+  <div class="tmr-time" id="timerDisplay">3:00</div>
+  <div class="tmr-info">
+    <div class="tmr-lbl">Temps de repos</div>
+    <div class="tmr-ex" id="timerExName">—</div>
+  </div>
+  <div class="tmr-btns">
+    <button class="btn-add" onclick="addTime(30)">+30s</button>
+    <button class="btn-x" onclick="dismissTimer()">✕</button>
+  </div>
+</div>
 
-    <div id="Lundi" class="tabcontent">
-        <h2>Pecs & Triceps</h2>
-        <div class="progress-wrapper"><div class="progress-bar" id="prog-Lundi"></div></div>
+<div class="pr-pop" id="prPopup">
+  <div class="pr-emoji">🏆</div>
+  <div class="pr-title">NOUVEAU RECORD !</div>
+  <div class="pr-name" id="prPopName">—</div>
+  <div class="pr-val" id="prPopVal">—</div>
+</div>
 
-        <div class="exercise-card" data-exo="lundi-1" data-muscle="Pecs" data-rest="180" data-name="Développé couché">
-            <div class="exercise-header">
-                <h4>Développé couché</h4>
-                <span class="btn-small" style="background:#334155;">⏱️ 3:00</span>
-            </div>
-            <div class="exercise-inputs">
-                <input type="number" class="w-input" id="w-lundi-1" placeholder="Charge" oninput="autoSave()"> kg
-                <input type="number" class="r-input" id="r-lundi-1" placeholder="Reps" oninput="autoSave()" value="8"> reps
-            </div>
-            <div class="sets-container" data-day="Lundi">
-                <input type="checkbox" id="l1-s1" class="set-checkbox" onchange="handleSetChange(this)"><label for="l1-s1" class="set-label">1</label>
-                <input type="checkbox" id="l1-s2" class="set-checkbox" onchange="handleSetChange(this)"><label for="l1-s2" class="set-label">2</label>
-                <input type="checkbox" id="l1-s3" class="set-checkbox" onchange="handleSetChange(this)"><label for="l1-s3" class="set-label">3</label>
-                <input type="checkbox" id="l1-s4" class="set-checkbox" onchange="handleSetChange(this)"><label for="l1-s4" class="set-label">4</label>
-            </div>
-        </div>
-
-        <div class="exercise-card" data-exo="lundi-5" data-muscle="Bras" data-rest="90" data-name="Extension Triceps">
-            <div class="exercise-header">
-                <h4>Extension Triceps Poulie</h4>
-                <span class="btn-small" style="background:#334155;">⏱️ 1:30</span>
-            </div>
-            <div class="exercise-inputs">
-                <input type="number" class="w-input" id="w-lundi-5" placeholder="Charge" oninput="autoSave()"> kg
-                <input type="number" class="r-input" id="r-lundi-5" placeholder="Reps" oninput="autoSave()" value="12"> reps
-            </div>
-            <div class="sets-container" data-day="Lundi">
-                <input type="checkbox" id="l5-s1" class="set-checkbox" onchange="handleSetChange(this)"><label for="l5-s1" class="set-label">1</label>
-                <input type="checkbox" id="l5-s2" class="set-checkbox" onchange="handleSetChange(this)"><label for="l5-s2" class="set-label">2</label>
-                <input type="checkbox" id="l5-s3" class="set-checkbox" onchange="handleSetChange(this)"><label for="l5-s3" class="set-label">3</label>
-            </div>
-        </div>
-    </div>
-
-    <div id="Mardi" class="tabcontent">
-        <h2>Dos, Biceps & Cardio</h2>
-        <div class="progress-wrapper"><div class="progress-bar" id="prog-Mardi"></div></div>
-
-        <div class="exercise-card" data-exo="mardi-1" data-muscle="Dos" data-rest="180" data-name="Tractions">
-            <div class="exercise-header">
-                <h4>Tractions</h4>
-                <span class="btn-small" style="background:#334155;">⏱️ 3:00</span>
-            </div>
-            <div class="exercise-inputs">
-                <input type="number" class="w-input" id="w-mardi-1" placeholder="Poids" oninput="autoSave()"> kg
-                <input type="number" class="r-input" id="r-mardi-1" placeholder="Reps" oninput="autoSave()" value="8"> reps
-            </div>
-            <div class="sets-container" data-day="Mardi">
-                <input type="checkbox" id="m1-s1" class="set-checkbox" onchange="handleSetChange(this)"><label for="m1-s1" class="set-label">1</label>
-                <input type="checkbox" id="m1-s2" class="set-checkbox" onchange="handleSetChange(this)"><label for="m1-s2" class="set-label">2</label>
-                <input type="checkbox" id="m1-s3" class="set-checkbox" onchange="handleSetChange(this)"><label for="m1-s3" class="set-label">3</label>
-                <input type="checkbox" id="m1-s4" class="set-checkbox" onchange="handleSetChange(this)"><label for="m1-s4" class="set-label">4</label>
-            </div>
-        </div>
-        
-        <div class="exercise-card" data-exo="mardi-4" data-muscle="Bras" data-rest="90" data-name="Curl Biceps">
-            <div class="exercise-header">
-                <h4>Curl Biceps Barre EZ</h4>
-                <span class="btn-small" style="background:#334155;">⏱️ 1:30</span>
-            </div>
-            <div class="exercise-inputs">
-                <input type="number" class="w-input" id="w-mardi-4" placeholder="Poids" oninput="autoSave()"> kg
-                <input type="number" class="r-input" id="r-mardi-4" placeholder="Reps" oninput="autoSave()" value="10"> reps
-            </div>
-            <div class="sets-container" data-day="Mardi">
-                <input type="checkbox" id="m4-s1" class="set-checkbox" onchange="handleSetChange(this)"><label for="m4-s1" class="set-label">1</label>
-                <input type="checkbox" id="m4-s2" class="set-checkbox" onchange="handleSetChange(this)"><label for="m4-s2" class="set-label">2</label>
-                <input type="checkbox" id="m4-s3" class="set-checkbox" onchange="handleSetChange(this)"><label for="m4-s3" class="set-label">3</label>
-            </div>
-        </div>
-    </div>
-
-    <div id="timer-widget">
-        ⏳ <span id="timer-display">00:00</span>
-        <button onclick="addTime(30)">+30s</button>
-        <button onclick="stopTimer()" style="background:var(--bg-dark); border:none;">X</button>
-    </div>
-
-    <script>
-        let db = JSON.parse(localStorage.getItem('fitTrackerDataCoach')) || {
-            weights: {}, checkboxes: {}, streak: { count: 0, lastDate: null },
-            historyCompletion: {}, prs: {}, age: null
-        };
-        const todayStr = new Date().toISOString().split('T')[0];
-        let saveTimeout;
-        let radarChartInstance = null;
-
-        function calcZones() {
-            const age = parseInt(document.getElementById('age-input').value);
-            if (age > 0) {
-                db.age = age;
-                const maxHR = 220 - age;
-                document.getElementById('z2-res').innerText = `${Math.round(maxHR * 0.6)} - ${Math.round(maxHR * 0.7)} bpm`;
-                document.getElementById('z3-res').innerText = `${Math.round(maxHR * 0.7)} - ${Math.round(maxHR * 0.8)} bpm`;
-                document.getElementById('z4-res').innerText = `${Math.round(maxHR * 0.8)} - ${Math.round(maxHR * 0.9)} bpm`;
-                document.getElementById('z5-res').innerText = `${Math.round(maxHR * 0.9)} - ${maxHR} bpm`;
-                localStorage.setItem('fitTrackerDataCoach', JSON.stringify(db));
-            }
-        }
-
-        function renderRadar() {
-            const ctx = document.getElementById('radar-chart').getContext('2d');
-            const muscles = { "Pecs": 0, "Dos": 0, "Bras": 0, "Abdos": 0, "Jambes": 0 };
-
-            document.querySelectorAll('.exercise-card').forEach(card => {
-                const muscle = card.getAttribute('data-muscle');
-                if(!muscle || !muscles.hasOwnProperty(muscle)) return;
-                
-                const w = parseFloat(card.querySelector('.w-input').value) || 0;
-                const r = parseFloat(card.querySelector('.r-input').value) || 0;
-                const sets = card.querySelectorAll('.set-checkbox:checked').length;
-                muscles[muscle] += (w * r * sets);
-            });
-
-            if(radarChartInstance) radarChartInstance.destroy();
-            
-            radarChartInstance = new Chart(ctx, {
-                type: 'radar',
-                data: {
-                    labels: Object.keys(muscles),
-                    datasets: [{
-                        label: 'Volume (kg)',
-                        data: Object.values(muscles),
-                        backgroundColor: 'rgba(59, 130, 246, 0.4)',
-                        borderColor: '#3b82f6',
-                        pointBackgroundColor: '#10b981',
-                        borderWidth: 2
-                    }]
-                },
-                options: {
-                    scales: {
-                        r: { 
-                            angleLines: { color: '#334155' }, 
-                            grid: { color: '#334155' }, 
-                            pointLabels: { color: '#f8fafc', font: { size: 14 } },
-                            ticks: { display: false }
-                        }
-                    },
-                    plugins: { legend: { display: false } }
-                }
-            });
-        }
-
-        function checkAndRenderPRs() {
-            let prHtml = "";
-            let newPrDetected = false;
-
-            document.querySelectorAll('.w-input').forEach(input => {
-                const id = input.id;
-                const val = parseFloat(input.value);
-                const exoName = input.closest('.exercise-card').getAttribute('data-name') || "Exercice";
-                
-                if (val > 0) {
-                    if (!db.prs[id] || val > db.prs[id].weight) {
-                        db.prs[id] = { weight: val, name: exoName };
-                        newPrDetected = true;
-                    }
-                }
-            });
-
-            const prKeys = Object.keys(db.prs);
-            if(prKeys.length > 0) {
-                prKeys.forEach(key => {
-                    prHtml += `<div class="pr-item"><span>${db.prs[key].name}</span> <strong style="color:var(--warning);">${db.prs[key].weight} kg</strong></div>`;
-                });
-                document.getElementById('pr-list').innerHTML = prHtml;
-            }
-
-            if(newPrDetected) {
-                const notif = document.getElementById('pr-notification');
-                notif.style.display = 'block';
-                setTimeout(() => notif.style.display = 'none', 4000);
-            }
-        }
-
-        function autoSave() {
-            clearTimeout(saveTimeout);
-            document.getElementById('save-status').innerText = "Sauvegarde...";
-            
-            saveTimeout = setTimeout(() => {
-                document.querySelectorAll('.w-input').forEach(input => {
-                    if (input.value) {
-                        if (!db.weights[input.id]) db.weights[input.id] = [];
-                        const last = db.weights[input.id].slice(-1)[0];
-                        if (last && last.date === todayStr) last.val = input.value;
-                        else db.weights[input.id].push({ date: todayStr, val: input.value });
-                    }
-                });
-
-                document.querySelectorAll('.set-checkbox').forEach(box => {
-                    db.checkboxes[box.id] = { checked: box.checked, date: todayStr };
-                });
-
-                checkAndRenderPRs();
-                renderRadar();
-
-                localStorage.setItem('fitTrackerDataCoach', JSON.stringify(db));
-                document.getElementById('save-status').innerText = "✓ Enregistré";
-                setTimeout(() => document.getElementById('save-status').innerText = "", 2000);
-            }, 800);
-        }
-
-        let timerInterval;
-        let currentTimeLeft = 0;
-        
-        function handleSetChange(checkbox) {
-            const card = checkbox.closest('.exercise-card');
-            const dayName = checkbox.closest('.sets-container').getAttribute('data-day');
-            
-            updateProgress(dayName);
-            autoSave();
-            
-            if (checkbox.checked) {
-                const restTime = parseInt(card.getAttribute('data-rest')) || 120; 
-                startTimer(restTime);
-            }
-        }
-
-        function addTime(seconds) {
-            currentTimeLeft += seconds;
-            updateTimerDisplay();
-        }
-
-        function updateTimerDisplay() {
-            const display = document.getElementById('timer-display');
-            let m = Math.floor(currentTimeLeft / 60);
-            let s = currentTimeLeft % 60;
-            display.innerText = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
-        }
-
-        function startTimer(seconds) {
-            clearInterval(timerInterval);
-            currentTimeLeft = seconds;
-            const widget = document.getElementById('timer-widget');
-            widget.style.display = 'flex';
-            widget.style.backgroundColor = 'var(--danger)';
-
-            updateTimerDisplay();
-            timerInterval = setInterval(() => {
-                currentTimeLeft--;
-                updateTimerDisplay();
-                
-                if (currentTimeLeft <= 0) {
-                    clearInterval(timerInterval);
-                    widget.style.backgroundColor = 'var(--accent)';
-                    document.getElementById('timer-display').innerText = "GO !";
-                }
-            }, 1000);
-        }
-        function stopTimer() { clearInterval(timerInterval); document.getElementById('timer-widget').style.display = 'none'; }
-
-        function openTab(evt, tabName) {
-            document.querySelectorAll(".tabcontent").forEach(tab => tab.style.display = "none");
-            document.querySelectorAll(".tablink").forEach(link => link.classList.remove("active"));
-            document.getElementById(tabName).style.display = "block";
-            evt.currentTarget.classList.add("active");
-            if(tabName !== 'Stats') updateProgress(tabName);
-            renderRadar();
-        }
-
-        function updateProgress(dayName) {
-            const dayTab = document.getElementById(dayName);
-            if (!dayTab) return;
-            const checkBoxes = dayTab.querySelectorAll('.set-checkbox');
-            const checkedBoxes = dayTab.querySelectorAll('.set-checkbox:checked');
-            let progress = checkBoxes.length > 0 ? (checkedBoxes.length / checkBoxes.length) * 100 : 0;
-            document.getElementById(`prog-${dayName}`).style.width = `${progress}%`;
-        }
-
-        window.onload = () => {
-            document.querySelectorAll('.w-input').forEach(input => {
-                if (db.weights[input.id] && db.weights[input.id].length > 0) input.value = db.weights[input.id].slice(-1)[0].val;
-            });
-            document.querySelectorAll('.set-checkbox').forEach(box => {
-                if (db.checkboxes[box.id] && db.checkboxes[box.id].date === todayStr) box.checked = db.checkboxes[box.id].checked;
-            });
-            if(db.age) {
-                document.getElementById('age-input').value = db.age;
-                calcZones();
-            }
-            
-            checkAndRenderPRs();
-            renderRadar();
-        };
-    </script>
+<nav class="bnav">
+  <button class="nbtn on" id="nav-today" onclick="switchTab('today')"><span class="ni">🏠</span>Aujourd'hui</button>
+  <button class="nbtn" id="nav-week" onclick="switchTab('week')"><span class="ni">📅</span>Programme</button>
+  <button class="nbtn" id="nav-stats" onclick="switchTab('stats')"><span class="ni">📊</span>Stats</button>
+  <button class="nbtn" id="nav-cardio" onclick="switchTab('cardio')"><span class="ni">🏃</span>Cardio</button>
+</nav>
+<script src="script.js"></script>
 </body>
 </html>
