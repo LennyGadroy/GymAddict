@@ -1,41 +1,59 @@
 const PROGRAM = {
-  lundi:{label:"Lundi",day:1,icon:"💪",fullName:"Push — Pecs & Triceps",type:"gym",exercises:[
+  lundi:{label:"Lundi",day:1,icon:"💪🏻",fullName:"Pecs, Biceps, et Triceps",type:"gym",exercises:[
+    {id:"tractions",name:"Tractions",sets:3,repsLabel:"Max / 10",type:"compound",muscles:["triceps"],restSec:180},
+    {id:"dips",name:"Dips",sets:3,repsLabel:"Max / 10-12",type:"compound",muscles:["triceps"],restSec:180},
+    {id:"releves_jambes",name:"Relevés de jambes",sets:4,repsLabel:"12-15 reps",type:"isolation",muscles:["abdos"],restSec:90},
     {id:"dev_couche",name:"Développé couché (barre / haltères)",sets:4,repsLabel:"8-10 reps",type:"compound",muscles:["pecs"],restSec:180},
-    {id:"dev_incline",name:"Développé incliné haltères",sets:3,repsLabel:"10-12 reps",type:"compound",muscles:["pecs"],restSec:180},
-    {id:"ecartes_poulie",name:"Écartés à la poulie (Chest flys)",sets:3,repsLabel:"12-15 reps",type:"isolation",muscles:["pecs"],restSec:90},
-    {id:"dips",name:"Dips / Machine triceps",sets:3,repsLabel:"Max / 10-12",type:"compound",muscles:["triceps"],restSec:180},
-    {id:"ext_triceps_corde",name:"Extension triceps corde (poulie haute)",sets:3,repsLabel:"12-15 reps",type:"isolation",muscles:["triceps"],restSec:90},
+    {id:"curl_pupitre",name:"Curl Pupitre / Curl Marteau",sets:3,repsLabel:"Max / 10",type:"compound",muscles:["biceps"],restSec:180},
+    {id:"curl_ez",name:"Curl Barre EZ",sets:3,repsLabel:"Max / 10 ",type:"isolation",muscles:["biceps"],restSec:180},
+    {id:"ext_triceps",name:"Extension triceps (poulie haute)",sets:3,repsLabel:"12-15 reps",type:"isolation",muscles:["triceps"],restSec:90},
+    {id:"curl_biceps",name:"Curl Biceps (poulie basse)",sets:3,repsLabel:"12-15 reps",type:"isolation",muscles:["biceps"],restSec:90},
+    {id:"chest_fly",name:"Chest fly (papillon)",sets:3,repsLabel:"12-15 reps",type:"compound",muscles:["pecs"],restSec:180},
+    {id:"pompes",name:"Pompes",sets:3,repsLabel:"10-15 reps",type:"isolation",muscles:["abdos"],restSec:90},
+    {id:"gainage",name:"Gainage",sets:3,repsLabel:"60+ secondes",type:"isolation",muscles:["abdos"],restSec:60,isTime:true},
   ]},
-  mardi:{label:"Mardi",day:2,icon:"🏋️",fullName:"Pull — Dos & Biceps + HIIT",type:"gym+run",exercises:[
-    {id:"tractions",name:"Tractions / Tirage vertical poitrine",sets:4,repsLabel:"8-10 reps",type:"compound",muscles:["dos"],restSec:180},
-    {id:"rowing_barre",name:"Rowing barre / machine",sets:3,repsLabel:"10-12 reps",type:"compound",muscles:["dos"],restSec:180},
-    {id:"face_pulls",name:"Face pulls (poulie haute)",sets:3,repsLabel:"15 reps",type:"isolation",muscles:["epaules"],restSec:90},
-    {id:"curl_ez",name:"Curl biceps barre EZ",sets:3,repsLabel:"10-12 reps",type:"isolation",muscles:["biceps"],restSec:90},
-    {id:"curl_marteau",name:"Curl marteau haltères",sets:3,repsLabel:"12 reps",type:"isolation",muscles:["biceps"],restSec:90},
-  ],running:{name:"⚡ Fractionné HIIT",steps:["🔥 10 min d'échauffement lent","⚡ 10-15× : 30 sec sprint / 30 sec marche","🌬️ 5 min retour au calme"],targetDuration:30}},
-  mercredi:{label:"Mercredi",day:3,icon:"🎯",fullName:"Core & Épaules",type:"gym",exercises:[
+
+  mardi:{label:"Mardi",day:2,icon:"🤚🏻",fullName:"Dos & Épaules",type:"gym+run",exercises:[
+    {id:"tirage",name:"Tirage vertical",sets:4,repsLabel:"Max / 10-12 reps",type:"compound",muscles:["dos"],restSec:180},
+    {id:"press_fly",name:"Press fly (papillon)",sets:3,repsLabel:"Max / 10",type:"compound",muscles:["epaules"],restSec:180},
+    {id:"tirage_hori",name:"Tirage horizontal",sets:4,repsLabel:"Max / 10-12 reps",type:"compound",muscles:["dos"],restSec:180},
     {id:"dev_militaire",name:"Développé militaire haltères",sets:4,repsLabel:"8-10 reps",type:"compound",muscles:["epaules"],restSec:180},
     {id:"elev_laterales",name:"Élévations latérales haltères",sets:4,repsLabel:"15 reps",type:"isolation",muscles:["epaules"],restSec:90},
-    {id:"crunch_poulie",name:"Crunch à la poulie haute",sets:4,repsLabel:"15-20 reps",type:"isolation",muscles:["abdos"],restSec:90},
-    {id:"releves_jambes",name:"Relevés de jambes (suspendu / sol)",sets:4,repsLabel:"12-15 reps",type:"isolation",muscles:["abdos"],restSec:90},
-    {id:"gainage",name:"Gainage — Planche",sets:3,repsLabel:"60+ secondes",type:"isolation",muscles:["abdos"],restSec:60,isTime:true},
+    {id:"pullover",name:"Pull-over haltère (Superset B1)",sets:3,repsLabel:"12 reps",type:"compound",muscles:["dos"],restSec:0,},
+    {id:"oiseau",name:"Oiseau haltères / Reverse flys (Superset B2)",sets:3,repsLabel:"15 reps",type:"isolation",muscles:["epaules"],restSec:120,},
+  ],
+  running:{name:"⚡ Fractionné HIIT",steps:["🔥 10 min d'échauffement lent","⚡ 10-15× : 30 sec sprint / 30 sec marche","🌬️ 5 min retour au calme"],targetDuration:30}},
+
+  mercredi:{label:"Mercredi",day:3,icon:"🎯",fullName:"Abdos ?",type:"gym",exercises:[
   ]},
-  jeudi:{label:"Jeudi",day:4,icon:"🔥",fullName:"Supersets Rappel + Tempo Run",type:"gym+run",exercises:[
-    {id:"pompes_ss",name:"Pompes (Superset A1)",sets:3,repsLabel:"Max reps",type:"compound",muscles:["pecs"],restSec:0,superset:"A"},
-    {id:"tirage_horiz",name:"Tirage horizontal poulie basse (Superset A2)",sets:3,repsLabel:"12 reps",type:"compound",muscles:["dos"],restSec:120,superset:"A"},
-    {id:"pullover",name:"Pull-over haltère (Superset B1)",sets:3,repsLabel:"12 reps",type:"compound",muscles:["dos"],restSec:0,superset:"B"},
-    {id:"oiseau",name:"Oiseau haltères / Reverse flys (Superset B2)",sets:3,repsLabel:"15 reps",type:"isolation",muscles:["epaules"],restSec:120,superset:"B"},
-    {id:"leg_press",name:"Leg press (Optionnel — boost métabolique)",sets:4,repsLabel:"12 reps",type:"compound",muscles:["jambes"],restSec:120,optional:true},
-  ],running:{name:"🏃 Course Tempo 5km",steps:["🎯 5km à allure soutenue","💨 Légèrement inconfortable mais constant","⏱️ Maintiens le rythme jusqu'au bout"],targetDuration:35,targetDistance:5}},
-  vendredi:{label:"Vendredi",day:5,icon:"💥",fullName:"Gros Volume — Bras & Abdos",type:"gym",exercises:[
-    {id:"curl_pupitre",name:"Curl biceps pupitre (Preacher curl)",sets:4,repsLabel:"10-12 reps",type:"isolation",muscles:["biceps"],restSec:90},
-    {id:"ext_tete",name:"Extension triceps au-dessus de la tête",sets:4,repsLabel:"10-12 reps",type:"isolation",muscles:["triceps"],restSec:90},
-    {id:"curl_inverse",name:"Curl inversé prise pronation (avant-bras)",sets:3,repsLabel:"12 reps",type:"isolation",muscles:["biceps"],restSec:90},
-    {id:"russian_twists",name:"Russian twists avec poids",sets:3,repsLabel:"20 reps (×2 côtés)",type:"isolation",muscles:["abdos"],restSec:60},
-    {id:"abwheel",name:"Abwheel / Gainage dynamique",sets:3,repsLabel:"10-12 reps",type:"isolation",muscles:["abdos"],restSec:60},
+
+  jeudi:{label:"Jeudi",day:4,icon:"💪🏻",fullName:"Pecs, Biceps, et Triceps",type:"gym+run",exercises:[
+    {id:"tractions",name:"Tractions",sets:3,repsLabel:"Max / 10",type:"compound",muscles:["triceps"],restSec:180},
+    {id:"dips",name:"Dips",sets:3,repsLabel:"Max / 10-12",type:"compound",muscles:["triceps"],restSec:180},
+    {id:"releves_jambes",name:"Relevés de jambes",sets:4,repsLabel:"12-15 reps",type:"isolation",muscles:["abdos"],restSec:90},
+    {id:"dev_couche",name:"Développé couché (barre / haltères)",sets:4,repsLabel:"8-10 reps",type:"compound",muscles:["pecs"],restSec:180},
+    {id:"curl_pupitre",name:"Curl Pupitre / Curl Marteau",sets:3,repsLabel:"Max / 10",type:"compound",muscles:["biceps"],restSec:180},
+    {id:"curl_ez",name:"Curl Barre EZ",sets:3,repsLabel:"Max / 10 ",type:"isolation",muscles:["biceps"],restSec:180},
+    {id:"ext_triceps",name:"Extension triceps (poulie haute)",sets:3,repsLabel:"12-15 reps",type:"isolation",muscles:["triceps"],restSec:90},
+    {id:"curl_biceps",name:"Curl Biceps (poulie basse)",sets:3,repsLabel:"12-15 reps",type:"isolation",muscles:["biceps"],restSec:90},
+    {id:"chest_fly",name:"Chest fly (papillon)",sets:3,repsLabel:"Max / 10",type:"compound",muscles:["pecs"],restSec:180},
+    {id:"pompes",name:"Pompes",sets:3,repsLabel:"10-15 reps",type:"isolation",muscles:["abdos"],restSec:90},
+    {id:"gainage",name:"Gainage",sets:3,repsLabel:"60+ secondes",type:"isolation",muscles:["abdos"],restSec:60,isTime:true},
+  ],
+  running:{name:"🏃 Course Tempo 5km",steps:["🎯 5km à allure soutenue","💨 Légèrement inconfortable mais constant","⏱️ Maintiens le rythme jusqu'au bout"],targetDuration:35,targetDistance:5}},
+
+  vendredi:{label:"Vendredi",day:5,icon:"🤚🏻",fullName:"Dos & Épaules",type:"gym",exercises:[
+    {id:"tirage",name:"Tirage vertical",sets:4,repsLabel:"Max / 10-12 reps",type:"compound",muscles:["dos"],restSec:180},
+    {id:"press_fly",name:"Press fly (papillon)",sets:3,repsLabel:"Max / 10",type:"compound",muscles:["epaules"],restSec:180},
+    {id:"tirage_hori",name:"Tirage horizontal",sets:4,repsLabel:"Max / 10-12 reps",type:"compound",muscles:["dos"],restSec:180},
+    {id:"dev_militaire",name:"Développé militaire haltères",sets:4,repsLabel:"8-10 reps",type:"compound",muscles:["epaules"],restSec:180},
+    {id:"elev_laterales",name:"Élévations latérales haltères",sets:4,repsLabel:"15 reps",type:"isolation",muscles:["epaules"],restSec:90},
+    {id:"pullover",name:"Pull-over haltère (Superset B1)",sets:3,repsLabel:"12 reps",type:"compound",muscles:["dos"],restSec:0,},
+    {id:"oiseau",name:"Oiseau haltères / Reverse flys (Superset B2)",sets:3,repsLabel:"15 reps",type:"isolation",muscles:["epaules"],restSec:120,},
   ]},
+
   samedi:{label:"Samedi",day:6,icon:"😴",fullName:"Repos Total",type:"rest",exercises:[]},
-  dimanche:{label:"Dimanche",day:0,icon:"🌅",fullName:"Sortie Longue (Optionnel)",type:"run",exercises:[],running:{name:"🌿 Endurance Fondamentale — Zone 2",steps:["🕐 45–60 min à rythme très lent","💬 Tu dois pouvoir tenir une conversation","🔥 Optimal pour brûler les graisses"],targetDuration:55}}
+  dimanche:{label:"Dimanche",day:0,icon:"🌅",fullName:"Sortie Longue (Optionnel)",type:"run",exercises:[],running:{name:"🌿 Endurance Fondamentale",steps:["🕐 45–60 min à rythme très lent","💬 Tu dois pouvoir tenir une conversation","🔥 Optimal pour brûler les graisses"],targetDuration:55}}
 };
 
 const DAYS_ORDER = ['lundi','mardi','mercredi','jeudi','vendredi','samedi','dimanche'];
@@ -63,6 +81,7 @@ function getSet(dateKey,exId,idx){
   const d=gs();
   return (d.workouts&&d.workouts[dateKey]&&d.workouts[dateKey][exId]&&d.workouts[dateKey][exId][idx])||{done:false,weight:'',reps:''};
 }
+
 function saveSet(dateKey,exId,idx,field,val){
   const d=gs();
   if(!d.workouts)d.workouts={};
@@ -79,6 +98,7 @@ function getRunLog(dateKey,dayName){
   const d=gs();
   return (d.runLogs&&d.runLogs[dateKey])||{done:false,duration:'',distance:'',rpe:''};
 }
+
 function saveRunLog(dateKey,field,val){
   const d=gs();
   if(!d.runLogs)d.runLogs={};
@@ -90,6 +110,7 @@ function saveRunLog(dateKey,field,val){
 }
 
 function getPRs(){const d=gs();return d.prs||{};}
+
 function savePR(exId,weight,reps,date){
   const d=gs();
   if(!d.prs)d.prs={};
@@ -105,7 +126,6 @@ function markDayActive(dateKey){
 }
 
 function getActiveDays(){const d=gs();return d.activeDays||[];}
-
 function getAge(){const d=gs();return d.age||25;}
 function saveAge(a){const d=gs();d.age=a;ss(d);}
 
@@ -120,6 +140,7 @@ function computeStreak(){
   }
   return streak;
 }
+
 function computeReg(){
   const active=getActiveDays();
   let count=0;
@@ -129,9 +150,11 @@ function computeReg(){
   }
   return Math.round(count/7*100);
 }
+
 function updateStreak(){
   document.getElementById('streakBadge').textContent='🔥 '+computeStreak()+'j';
 }
+
 function updateReg(){
   document.getElementById('regBadge').textContent=computeReg()+'%';
 }
@@ -172,7 +195,9 @@ function startTimer(sec,exName){
   tick();
   _timerInterval=setInterval(tick,1000);
 }
+
 function addTime(s){_timerSec+=s;}
+
 function dismissTimer(){
   clearInterval(_timerInterval);_timerInterval=null;
   document.getElementById('timerWidget').classList.remove('show');
@@ -194,6 +219,7 @@ function checkAndShowPR(exId,exName,weight,reps){
     setTimeout(()=>updatePRFlags(exId,weight),100);
   }
 }
+
 function updatePRFlags(exId,weight){
   document.querySelectorAll('.pr-flag[data-ex="'+exId+'"]').forEach(el=>{
     el.style.display='inline-block';
@@ -370,8 +396,7 @@ function renderToday(){
   </div>`;
 
   if(prog.exercises.length>0){
-    html+=`<div class="stitle">Exercices</div>`;
-    html+=`<div class="card">`;
+    html+=`<div class="stitle">Exercices</div><div class="card">`;
     prog.exercises.forEach(ex=>{html+=renderExBlock(ex,dateKey);});
     html+=`</div>`;
   }
@@ -399,7 +424,6 @@ function renderToday(){
       </button>
     </div>`;
   }
-
   el.innerHTML=html;
 }
 
@@ -429,11 +453,13 @@ function renderWeek(){
 
     let typeTag='';
     if(prog.type==='gym')typeTag='<span style="color:var(--green);font-size:10px">🏋️ Salle</span>';
-    else if(prog.type==='gym+run')typeTag='<span style="color:var(--blue);font-size:10px">🏋️+🏃</span>';
-    else if(prog.type==='run')typeTag='<span style="color:var(--blue);font-size:10px">🏃 Running</span>';
+    else if(prog.type==='gym+run')typeTag='<span style="color:var(--blue);font-size:10px">🏋️ Salle + 🏃 Running</span>';
+    else if(prog.type==='run')typeTag='<span style="color:var(--purple);font-size:10px">🏃 Running</span>';
     else typeTag='<span style="color:var(--muted);font-size:10px">😴 Repos</span>';
 
-    html+=`<div class="wday${isToday?' today':''}">
+    const clickable=prog.type!=='rest';
+    html+=`<div class="wday${isToday?' today':''}" ${clickable?`onclick="openDayDrawer('${dayName}','${dateKey}')"`:''}
+      style="${clickable?'':'cursor:default'}">
       ${isToday?'<div class="today-tag">AUJOURD\'HUI</div>':''}
       <div class="wicon">${prog.icon}</div>
       <div>
@@ -441,17 +467,19 @@ function renderWeek(){
         <div class="wsub">${prog.fullName}</div>
         <div style="margin-top:4px">${typeTag}</div>
       </div>
-      <div style="margin-left:auto;text-align:right">
+      <div style="margin-left:auto;text-align:right;display:flex;align-items:center;gap:8px">
+        <div>
         ${prog.type!=='rest'&&p.total>0?`
           <div class="wprog${p.pct===0?' zero':''}">${p.pct}%</div>
           <div style="font-size:10px;color:var(--muted)">${p.done}/${p.total}</div>
           <div style="width:60px;height:4px;background:rgba(255,255,255,.06);border-radius:2px;margin-top:4px;margin-left:auto">
             <div style="width:${p.pct}%;height:100%;background:var(--green);border-radius:2px"></div>
-          </div>`:'<div class="wprog zero">—</div>'}
+          </div>`:prog.type!=='rest'?'<div class="wprog zero">0%</div>':'<div class="wprog zero">—</div>'}
+        </div>
+        ${clickable?'<div class="wday-chevron">›</div>':''}
       </div>
     </div>`;
   });
-
   el.innerHTML=html;
 }
 
@@ -536,7 +564,6 @@ function findExName(id){
 
 function renderCardio(){
   const age=getAge();
-
   const hrMax=220-age;
   let zonesHtml='';
   const zoneColors=['#4ade80','#38bdf8','#facc15','#fb923c','#f87171'];
@@ -631,6 +658,7 @@ function calcZones(){
   if(el){el.innerHTML=html;}
   document.querySelectorAll('[data-hrmax]').forEach(e=>e.textContent=hrMax);
 }
+
 const TABS=['today','week','stats','cardio'];
 function switchTab(name){
   TABS.forEach(t=>{
@@ -641,6 +669,74 @@ function switchTab(name){
   if(name==='week')renderWeek();
   if(name==='cardio')renderCardio();
   window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function openDayDrawer(dayName, dateKey){
+  const prog=PROGRAM[dayName];
+  if(!prog||prog.type==='rest')return;
+
+  document.getElementById('drawerTitle').textContent=prog.icon+' '+prog.fullName;
+  const p=getDayProgress(dateKey,dayName);
+  let html=`
+  <div class="card" style="margin-bottom:12px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+      <span style="font-size:12px;color:var(--dim)">${new Date(dateKey+'T12:00:00').toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'})}</span>
+      <span style="font-family:var(--fm);font-size:13px;color:var(--green);font-weight:700">${p.pct}%</span>
+    </div>
+    <div class="prog-wrap"><div class="prog-fill" id="prog-${dateKey}" style="width:${p.pct}%"></div></div>
+    <div class="prog-txt" id="progtxt-${dateKey}">${p.done}/${p.total} séries</div>
+  </div>`;
+
+  if(prog.exercises.length>0){
+    html+=`<div class="stitle">Exercices</div><div class="card">`;
+    prog.exercises.forEach(ex=>{html+=renderExBlock(ex,dateKey);});
+    html+=`</div>`;
+  }
+
+  if(prog.running){
+    const rl=getRunLog(dateKey,dayName);
+    html+=`<div class="stitle">Running</div>
+    <div class="run-card">
+      <div class="run-title">${prog.running.name}</div>
+      ${prog.running.steps.map(s=>`<div class="run-step">${s}</div>`).join('')}
+      <div class="run-log">
+        <div class="input-col"><span class="set-lbl">DURÉE (min)</span>
+          <input class="si" type="number" inputmode="numeric" placeholder="${prog.running.targetDuration}"
+            value="${rl.duration}" onchange="debounce('drl-dur-${dateKey}',()=>{saveRunLog('${dateKey}','duration',this.value);},400)"></div>
+        ${prog.running.targetDistance?`<div class="input-col"><span class="set-lbl">DIST (km)</span>
+          <input class="si" type="number" inputmode="decimal" placeholder="${prog.running.targetDistance}"
+            value="${rl.distance}" onchange="debounce('drl-dis-${dateKey}',()=>{saveRunLog('${dateKey}','distance',this.value);},400)"></div>`:'<div></div>'}
+        <div class="input-col"><span class="set-lbl">RPE (1-10)</span>
+          <input class="si" type="number" inputmode="numeric" placeholder="7" max="10" min="1"
+            value="${rl.rpe}" onchange="debounce('drl-rpe-${dateKey}',()=>{saveRunLog('${dateKey}','rpe',this.value);},400)"></div>
+      </div>
+      <button class="run-done-btn${rl.done?' done':''}" id="drawerRunBtn-${dateKey}"
+        onclick="toggleDrawerRunDone('${dateKey}')">
+        ${rl.done?'✅ Séance Running Terminée !':'Marquer la séance Running comme faite'}
+      </button>
+    </div>`;
+  }
+
+  document.getElementById('drawerBody').innerHTML=html;
+  document.getElementById('drawerOverlay').classList.add('open');
+  document.getElementById('dayDrawer').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+
+function closeDrawer(){
+  document.getElementById('drawerOverlay').classList.remove('open');
+  document.getElementById('dayDrawer').classList.remove('open');
+  document.body.style.overflow='';
+  renderWeek();
+}
+
+function toggleDrawerRunDone(dateKey){
+  const rl=getRunLog(dateKey);
+  const newVal=!rl.done;
+  saveRunLog(dateKey,'done',newVal);
+  const btn=document.getElementById('drawerRunBtn-'+dateKey);
+  if(btn){btn.className='run-done-btn'+(newVal?' done':'');btn.textContent=newVal?'✅ Séance Running Terminée !':'Marquer la séance Running comme faite';}
+  markDayActive(dateKey);
 }
 
 function init(){
