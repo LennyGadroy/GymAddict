@@ -21,10 +21,21 @@
         h1, h2, h3 { text-align: center; margin-top: 5px; }
         .card { background-color: var(--bg-card); padding: 15px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
         
-        input[type="number"] { padding: 8px; border-radius: 5px; border: 1px solid #475569; background: #334155; color: white; text-align: center; width: 70px; }
+        input { padding: 8px; border-radius: 5px; border: 1px solid #475569; background: #334155; color: white; text-align: center; width: 70px; }
+        input[type="text"] { width: 90px; }
         button { padding: 10px 15px; background-color: var(--primary); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
         .btn-small { padding: 5px 10px; font-size: 0.8em; }
         
+        .gamification-bar { display: flex; gap: 10px; margin-bottom: 15px; }
+        .stat-box { flex: 1; background: var(--bg-card); padding: 10px; border-radius: 12px; text-align: center; font-weight: bold; border-bottom: 4px solid var(--primary); box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+        .stat-val { font-size: 1.8em; display: block; margin-top: 5px; }
+        .stat-streak { color: var(--running); border-bottom-color: var(--running); }
+        .stat-consist { color: var(--accent); border-bottom-color: var(--accent); }
+
+        .tools-grid { display: grid; grid-template-columns: 1fr; gap: 15px; }
+        .tool-section { padding: 10px; background: #334155; border-radius: 8px; }
+        .tool-row { display: flex; align-items: center; justify-content: space-between; margin-top: 5px; gap: 5px; }
+
         .data-tools { display: flex; justify-content: space-between; margin-bottom: 15px; gap: 10px; }
         .data-tools button { flex: 1; background-color: #475569; }
 
@@ -47,35 +58,67 @@
         .set-checkbox:checked + .set-label { background-color: var(--primary); color: white; }
 
         #timer-widget { position: fixed; bottom: 20px; right: 20px; background: var(--danger); color: white; padding: 15px 25px; border-radius: 50px; font-size: 1.5rem; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.5); display: none; align-items: center; gap: 10px; z-index: 1000; }
-        #timer-widget button { background: white; color: var(--danger); padding: 5px 10px; font-size: 1rem; }
+        #timer-widget button { background: white; color: var(--danger); padding: 5px 10px; font-size: 1rem; border-radius: 50%; }
 
         .chart-container { position: relative; height: 200px; width: 100%; margin-top: 10px; display: none; }
-        
-        #save-status { text-align: center; font-size: 0.8em; color: var(--accent); margin-top: 10px; min-height: 15px; }
+        #save-status { text-align: center; font-size: 0.8em; color: var(--accent); margin-top: 5px; min-height: 15px; }
     </style>
 </head>
 <body>
 
-    <h1>⚡ FitTracker Elite</h1>
+    <h1>🚀 FitTracker Ultimate</h1>
+
+    <div class="gamification-bar">
+        <div class="stat-box stat-streak">
+            🔥 Série Actuelle
+            <span class="stat-val"><span id="streak-count">0</span> j</span>
+        </div>
+        <div class="stat-box stat-consist">
+            🎯 Régularité (7j)
+            <span class="stat-val"><span id="consistency-score">0</span>%</span>
+        </div>
+    </div>
 
     <div class="data-tools">
-        <button onclick="exportData()">⬇️ Exporter (Sauvegarde)</button>
-        <button onclick="document.getElementById('import-file').click()">⬆️ Importer</button>
+        <button onclick="exportData()">⬇️ Sauvegarde</button>
+        <button onclick="document.getElementById('import-file').click()">⬆️ Restaurer</button>
         <input type="file" id="import-file" style="display:none" accept=".json" onchange="importData(event)">
     </div>
 
     <div class="card">
-        <h3>🎯 Outils Avancés</h3>
-        <div style="display: flex; gap: 10px; align-items: center; justify-content: center; margin-bottom: 15px;">
-            <input type="number" id="rm-w" placeholder="Poids" oninput="calcRM()">
-            <span>kg ×</span>
-            <input type="number" id="rm-r" placeholder="Reps" oninput="calcRM()">
-            <strong style="color:var(--warning); font-size:1.2em;">= <span id="rm-result">0</span> kg (1RM)</strong>
+        <h3>🛠️ Outils & Calculettes</h3>
+        <div class="tools-grid">
+            <div class="tool-section">
+                <strong style="color:var(--running);">🏃‍♂️ Calculateur d'allure</strong>
+                <div class="tool-row">
+                    <input type="number" id="pace-d" placeholder="Dist (km)" oninput="calcPace()">
+                    <input type="text" id="pace-t" placeholder="Temps (mm:ss)" oninput="calcPace()">
+                    <strong style="color:var(--text-light);">= <span id="pace-res">0:00</span> /km</strong>
+                </div>
+            </div>
+            
+            <div class="tool-section">
+                <strong style="color:var(--running);">📈 VMA (Test Demi-Cooper 6min)</strong>
+                <div class="tool-row">
+                    <input type="number" id="vma-d" placeholder="Dist (mètres)" oninput="calcVMA()">
+                    <strong style="color:var(--text-light);">= <span id="vma-res">0.0</span> km/h</strong>
+                </div>
+            </div>
+
+            <div class="tool-section">
+                <strong style="color:var(--primary);">🏋️‍♂️ Estimateur 1RM Max</strong>
+                <div class="tool-row">
+                    <input type="number" id="rm-w" placeholder="Poids" oninput="calcRM()">
+                    <input type="number" id="rm-r" placeholder="Reps" oninput="calcRM()">
+                    <strong style="color:var(--warning);">= <span id="rm-res">0</span> kg</strong>
+                </div>
+            </div>
         </div>
+
         <hr style="border-color: #334155; margin: 15px 0;">
         <div style="display: flex; justify-content: space-between; align-items: center;">
-            <div><strong>Volume Total du Jour :</strong> <span id="daily-volume" style="color:var(--accent);">0</span> kg</div>
-            <button class="btn-small" onclick="toggleChart('volume-chart')">Graphique Volume</button>
+            <div><strong>Volume du Jour :</strong> <span id="daily-volume" style="color:var(--accent);">0</span> kg</div>
+            <button class="btn-small" onclick="toggleChart('volume-chart')">Graphique</button>
         </div>
         <div class="chart-container" id="container-volume-chart"><canvas id="volume-chart"></canvas></div>
     </div>
@@ -86,8 +129,8 @@
     </div>
 
     <div id="save-status"></div>
-    
-    <div id="Lundi" class="tabcontent" style="display:block;" data-has-run="false">
+
+    <div id="Lundi" class="tabcontent" style="display:block;">
         <h2>Pecs & Triceps</h2>
         <div class="progress-wrapper"><div class="progress-bar" id="prog-Lundi"></div></div>
 
@@ -98,7 +141,7 @@
             </div>
             <div class="exercise-inputs">
                 <input type="number" class="w-input" id="w-lundi-1" placeholder="Charge" oninput="autoSave()"> kg
-                <input type="number" class="r-input" id="r-lundi-1" placeholder="Reps" oninput="autoSave()" value="8"> reps/série
+                <input type="number" class="r-input" id="r-lundi-1" placeholder="Reps" oninput="autoSave()" value="8">
             </div>
             <div class="sets-container" data-day="Lundi">
                 <input type="checkbox" id="l1-s1" class="set-checkbox" onchange="handleSetChange(this)"><label for="l1-s1" class="set-label">1</label>
@@ -108,31 +151,14 @@
             </div>
             <div class="chart-container" id="container-chart-lundi-1"><canvas id="chart-lundi-1"></canvas></div>
         </div>
-
-        <div class="exercise-card" data-exo="lundi-2">
-            <div class="exercise-header">
-                <h4>Développé incliné haltères (3x10-12)</h4>
-                <button class="btn-small" onclick="toggleChart('chart-lundi-2')">Évolution</button>
-            </div>
-            <div class="exercise-inputs">
-                <input type="number" class="w-input" id="w-lundi-2" placeholder="Charge" oninput="autoSave()"> kg
-                <input type="number" class="r-input" id="r-lundi-2" placeholder="Reps" oninput="autoSave()" value="10"> reps/série
-            </div>
-            <div class="sets-container" data-day="Lundi">
-                <input type="checkbox" id="l2-s1" class="set-checkbox" onchange="handleSetChange(this)"><label for="l2-s1" class="set-label">1</label>
-                <input type="checkbox" id="l2-s2" class="set-checkbox" onchange="handleSetChange(this)"><label for="l2-s2" class="set-label">2</label>
-                <input type="checkbox" id="l2-s3" class="set-checkbox" onchange="handleSetChange(this)"><label for="l2-s3" class="set-label">3</label>
-            </div>
-            <div class="chart-container" id="container-chart-lundi-2"><canvas id="chart-lundi-2"></canvas></div>
-        </div>
     </div>
 
-    <div id="Mardi" class="tabcontent" data-has-run="true">
+    <div id="Mardi" class="tabcontent">
         <h2>Dos, Biceps & Running</h2>
         <div class="progress-wrapper"><div class="progress-bar" id="prog-Mardi"></div></div>
 
         <div class="exercise-card" style="border-left-color: var(--running);">
-            <h4 style="color:var(--running); margin:0 0 10px 0;">🏃‍♂️ Fractionné HIIT</h4>
+            <h4 style="color:var(--running); margin:0 0 10px 0;">🏃‍♂️ Fractionné HIIT (15x 30/30)</h4>
             <div class="sets-container" data-day="Mardi">
                 <input type="checkbox" id="run-m-done" class="set-checkbox run-check" onchange="handleSetChange(this)">
                 <label for="run-m-done" class="set-label" style="border-color:var(--running); width:auto; padding:0 15px;">Séance Validée ✓</label>
@@ -146,7 +172,7 @@
             </div>
             <div class="exercise-inputs">
                 <input type="number" class="w-input" id="w-mardi-1" placeholder="Poids" oninput="autoSave()"> kg
-                <input type="number" class="r-input" id="r-mardi-1" placeholder="Reps" oninput="autoSave()" value="8"> reps/série
+                <input type="number" class="r-input" id="r-mardi-1" placeholder="Reps" oninput="autoSave()" value="8">
             </div>
             <div class="sets-container" data-day="Mardi">
                 <input type="checkbox" id="m1-s1" class="set-checkbox" onchange="handleSetChange(this)"><label for="m1-s1" class="set-label">1</label>
@@ -164,68 +190,113 @@
     </div>
 
     <script>
-        let db = JSON.parse(localStorage.getItem('fitTrackerElite')) || {
-            weights: {}, volume: [], checkboxes: {}
+        let db = JSON.parse(localStorage.getItem('fitTrackerUltimate')) || {
+            weights: {}, volume: [], checkboxes: {},
+            streak: { count: 0, lastDate: null },
+            historyCompletion: {}
         };
         const todayStr = new Date().toISOString().split('T')[0];
+        const daysMap = { 1: 'Lundi', 2: 'Mardi', 3: 'Mercredi', 4: 'Jeudi', 5: 'Vendredi', 6: 'Samedi', 0: 'Dimanche' };
+        const currentRealDay = daysMap[new Date().getDay()];
         let saveTimeout;
+
+        function calcPace() {
+            const d = parseFloat(document.getElementById('pace-d').value);
+            const t = document.getElementById('pace-t').value;
+            if (d > 0 && t.includes(':')) {
+                const parts = t.split(':');
+                const minutes = parseInt(parts[0]) + (parseInt(parts[1]) / 60);
+                const paceDec = minutes / d;
+                const pMin = Math.floor(paceDec);
+                const pSec = Math.round((paceDec - pMin) * 60);
+                document.getElementById('pace-res').innerText = `${pMin}:${pSec.toString().padStart(2, '0')}`;
+            }
+        }
+
+        function calcVMA() {
+            const m = parseFloat(document.getElementById('vma-d').value);
+            if (m > 0) document.getElementById('vma-res').innerText = (m / 100).toFixed(1);
+        }
 
         function calcRM() {
             const w = parseFloat(document.getElementById('rm-w').value);
             const r = parseFloat(document.getElementById('rm-r').value);
-            if (w > 0 && r > 0) {
-                const rm = w * (1 + (r / 30));
-                document.getElementById('rm-result').innerText = rm.toFixed(1);
+            if (w > 0 && r > 0) document.getElementById('rm-res').innerText = (w * (1 + (r / 30))).toFixed(1);
+        }
+
+        function updateGamification(todayProgress) {
+            if(todayProgress !== null) {
+                db.historyCompletion[todayStr] = todayProgress;
+                if (todayProgress > 0) {
+                    if (db.streak.lastDate) {
+                        const last = new Date(db.streak.lastDate);
+                        const today = new Date(todayStr);
+                        const diffDays = Math.ceil(Math.abs(today - last) / (1000 * 60 * 60 * 24));
+                        if (diffDays === 1) { db.streak.count++; db.streak.lastDate = todayStr; } 
+                        else if (diffDays > 1) { db.streak.count = 1; db.streak.lastDate = todayStr; }
+                    } else {
+                        db.streak.count = 1; db.streak.lastDate = todayStr;
+                    }
+                }
             }
+            document.getElementById('streak-count').innerText = db.streak.count;
+            let sum = 0;
+            const now = new Date(todayStr);
+            for(let i=0; i<7; i++) {
+                let d = new Date(now);
+                d.setDate(d.getDate() - i);
+                let dStr = d.toISOString().split('T')[0];
+                sum += (db.historyCompletion[dStr] || 0);
+            }
+            document.getElementById('consistency-score').innerText = Math.round(sum / 7);
         }
 
         function calculateVolume() {
             let dailyTotal = 0;
             document.querySelectorAll('.exercise-card').forEach(card => {
-                const wInput = card.querySelector('.w-input');
-                const rInput = card.querySelector('.r-input');
-                if (!wInput || !rInput) return;
-                
-                const w = parseFloat(wInput.value) || 0;
-                const r = parseFloat(rInput.value) || 0;
-                const checkedSets = card.querySelectorAll('.set-checkbox:checked').length;
-                
-                dailyTotal += (w * r * checkedSets);
+                const wIn = card.querySelector('.w-input');
+                const rIn = card.querySelector('.r-input');
+                if (!wIn || !rIn) return;
+                const w = parseFloat(wIn.value) || 0;
+                const r = parseFloat(rIn.value) || 0;
+                const checked = card.querySelectorAll('.set-checkbox:checked').length;
+                dailyTotal += (w * r * checked);
             });
-            
             document.getElementById('daily-volume').innerText = dailyTotal.toFixed(0);
-
             if(dailyTotal > 0) {
-                const lastEntry = db.volume.slice(-1)[0];
-                if (lastEntry && lastEntry.date === todayStr) {
-                    lastEntry.val = dailyTotal;
-                } else {
-                    db.volume.push({ date: todayStr, val: dailyTotal });
-                }
+                const last = db.volume.slice(-1)[0];
+                if (last && last.date === todayStr) last.val = dailyTotal;
+                else db.volume.push({ date: todayStr, val: dailyTotal });
             }
         }
 
         function autoSave() {
             clearTimeout(saveTimeout);
-            document.getElementById('save-status').innerText = "Sauvegarde en cours...";
-            
+            document.getElementById('save-status').innerText = "Sauvegarde...";
             saveTimeout = setTimeout(() => {
                 document.querySelectorAll('.w-input').forEach(input => {
                     if (input.value) {
                         if (!db.weights[input.id]) db.weights[input.id] = [];
-                        const lastEntry = db.weights[input.id].slice(-1)[0];
-                        if (lastEntry && lastEntry.date === todayStr) lastEntry.val = input.value;
+                        const last = db.weights[input.id].slice(-1)[0];
+                        if (last && last.date === todayStr) last.val = input.value;
                         else db.weights[input.id].push({ date: todayStr, val: input.value });
                     }
                 });
-
                 document.querySelectorAll('.set-checkbox').forEach(box => {
                     db.checkboxes[box.id] = { checked: box.checked, date: todayStr };
                 });
-
                 calculateVolume();
-                localStorage.setItem('fitTrackerElite', JSON.stringify(db));
-                document.getElementById('save-status').innerText = "✓ Enregistré automatiquement";
+                const activeTab = document.querySelector('.tabcontent[style="display: block;"]').id;
+                if (activeTab === currentRealDay) {
+                    const checkBoxes = document.getElementById(activeTab).querySelectorAll('.set-checkbox');
+                    const checkedBoxes = document.getElementById(activeTab).querySelectorAll('.set-checkbox:checked');
+                    const progress = checkBoxes.length > 0 ? (checkedBoxes.length / checkBoxes.length) * 100 : 0;
+                    updateGamification(progress);
+                } else {
+                    updateGamification(null);
+                }
+                localStorage.setItem('fitTrackerUltimate', JSON.stringify(db));
+                document.getElementById('save-status').innerText = "✓ Enregistré";
                 setTimeout(() => document.getElementById('save-status').innerText = "", 2000);
             }, 800);
         }
@@ -234,52 +305,7 @@
             const dayName = checkbox.closest('.sets-container').getAttribute('data-day');
             updateProgress(dayName);
             autoSave();
-
             if (checkbox.checked) startTimer(180);
-        }
-
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        
-        function playBeep() {
-            if(audioCtx.state === 'suspended') audioCtx.resume();
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(800, audioCtx.currentTime);
-            gain.gain.setValueAtTime(1, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1);
-            osc.start(audioCtx.currentTime);
-            osc.stop(audioCtx.currentTime + 1);
-        }
-
-        function startTimer(seconds) {
-            clearInterval(timerInterval);
-            let timeLeft = seconds;
-            const widget = document.getElementById('timer-widget');
-            const display = document.getElementById('timer-display');
-            widget.style.display = 'flex';
-            widget.style.backgroundColor = 'var(--danger)';
-
-            timerInterval = setInterval(() => {
-                timeLeft--;
-                let m = Math.floor(timeLeft / 60);
-                let s = timeLeft % 60;
-                display.innerText = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
-                
-                if (timeLeft <= 0) {
-                    clearInterval(timerInterval);
-                    widget.style.backgroundColor = 'var(--accent)';
-                    display.innerText = "GO !";
-                    playBeep();
-                }
-            }, 1000);
-        }
-
-        function stopTimer() {
-            clearInterval(timerInterval);
-            document.getElementById('timer-widget').style.display = 'none';
         }
 
         function openDay(evt, dayName) {
@@ -300,42 +326,69 @@
             document.getElementById(`prog-${dayName}`).style.width = `${progress}%`;
         }
 
+        let timerInterval;
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        
+        function playBeep() {
+            if(audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain); gain.connect(audioCtx.destination);
+            osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+            gain.gain.setValueAtTime(1, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1);
+            osc.start(audioCtx.currentTime); osc.stop(audioCtx.currentTime + 1);
+        }
+
+        function startTimer(seconds) {
+            clearInterval(timerInterval);
+            let timeLeft = seconds;
+            const widget = document.getElementById('timer-widget');
+            const display = document.getElementById('timer-display');
+            widget.style.display = 'flex';
+            widget.style.backgroundColor = 'var(--danger)';
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                let m = Math.floor(timeLeft / 60);
+                let s = timeLeft % 60;
+                display.innerText = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    widget.style.backgroundColor = 'var(--accent)';
+                    display.innerText = "GO !";
+                    playBeep();
+                }
+            }, 1000);
+        }
+        function stopTimer() { clearInterval(timerInterval); document.getElementById('timer-widget').style.display = 'none'; }
+
         window.onload = () => {
             document.querySelectorAll('.w-input').forEach(input => {
-                if (db.weights[input.id] && db.weights[input.id].length > 0) {
-                    input.value = db.weights[input.id].slice(-1)[0].val;
-                }
+                if (db.weights[input.id] && db.weights[input.id].length > 0) input.value = db.weights[input.id].slice(-1)[0].val;
             });
             document.querySelectorAll('.set-checkbox').forEach(box => {
-                if (db.checkboxes[box.id] && db.checkboxes[box.id].date === todayStr) {
-                    box.checked = db.checkboxes[box.id].checked;
-                }
+                if (db.checkboxes[box.id] && db.checkboxes[box.id].date === todayStr) box.checked = db.checkboxes[box.id].checked;
             });
-            updateProgress('Lundi');
-            calculateVolume();
+            if(document.getElementById(currentRealDay)) {
+                openDay({currentTarget: document.querySelector(`button[onclick="openDay(event, '${currentRealDay}')"]`)}, currentRealDay);
+            } else {
+                updateProgress('Lundi'); calculateVolume();
+            }
+            updateGamification(null);
         };
 
         function exportData() {
             const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(db));
-            const dlAnchorElem = document.createElement('a');
-            dlAnchorElem.setAttribute("href", dataStr);
-            dlAnchorElem.setAttribute("download", `FitTracker_Sauvegarde_${todayStr}.json`);
-            dlAnchorElem.click();
+            const a = document.createElement('a'); a.href = dataStr; a.download = `FitTracker_${todayStr}.json`; a.click();
         }
-
         function importData(event) {
-            const file = event.target.files[0];
-            if(!file) return;
+            const file = event.target.files[0]; if(!file) return;
             const reader = new FileReader();
             reader.onload = function(e) {
                 try {
-                    db = JSON.parse(e.target.result);
-                    localStorage.setItem('fitTrackerElite', JSON.stringify(db));
-                    alert("✅ Données importées avec succès ! La page va se recharger.");
-                    location.reload();
-                } catch (err) {
-                    alert("❌ Erreur lors de l'importation du fichier.");
-                }
+                    db = JSON.parse(e.target.result); localStorage.setItem('fitTrackerUltimate', JSON.stringify(db));
+                    alert("✅ Données restaurées !"); location.reload();
+                } catch (err) { alert("❌ Erreur de fichier."); }
             };
             reader.readAsText(file);
         }
@@ -343,28 +396,18 @@
         let chartsInstances = {};
         function toggleChart(canvasId) {
             const container = document.getElementById(`container-${canvasId}`);
-            if (container.style.display === 'block') {
-                container.style.display = 'none';
-            } else {
+            if (container.style.display === 'block') { container.style.display = 'none'; } 
+            else {
                 container.style.display = 'block';
-                let dataArr = [];
-                let color = '#3b82f6';
-                if (canvasId === 'volume-chart') {
-                    dataArr = db.volume; color = '#10b981';
-                } else {
-                    const inputId = `w-${canvasId.replace('chart-', '')}`;
-                    dataArr = db.weights[inputId] || [];
-                }
-                
+                let dataArr = []; let color = '#3b82f6';
+                if (canvasId === 'volume-chart') { dataArr = db.volume; color = '#10b981'; } 
+                else { const inputId = `w-${canvasId.replace('chart-', '')}`; dataArr = db.weights[inputId] || []; }
                 if(!dataArr || dataArr.length === 0) return;
                 const ctx = document.getElementById(canvasId).getContext('2d');
-                const labels = dataArr.map(item => item.date.slice(5));
-                const data = dataArr.map(item => parseFloat(item.val));
-
                 if (chartsInstances[canvasId]) chartsInstances[canvasId].destroy();
                 chartsInstances[canvasId] = new Chart(ctx, {
                     type: 'bar',
-                    data: { labels: labels, datasets: [{ label: 'Évolution', data: data, backgroundColor: color }] },
+                    data: { labels: dataArr.map(i => i.date.slice(5)), datasets: [{ label: 'Stats', data: dataArr.map(i => parseFloat(i.val)), backgroundColor: color }] },
                     options: { responsive: true, maintainAspectRatio: false, scales: { y: { ticks: { color: '#cbd5e1' } }, x: { ticks: { color: '#cbd5e1' } } }, plugins: { legend: { display: false } } }
                 });
             }
