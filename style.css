@@ -128,3 +128,4 @@ body{background:var(--bg);color:var(--text);font-family:var(--fb);min-height:100
 input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;}
 .empty{text-align:center;padding:30px 16px;color:var(--muted);font-size:13px;}
 .chip{display:inline-flex;align-items:center;gap:5px;background:var(--gd);border:1px solid var(--green);border-radius:20px;padding:4px 10px;font-size:11px;color:var(--green);font-weight:600;margin-bottom:10px;}
+select.si{text-align:left;background-image:none;}

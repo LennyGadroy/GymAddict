@@ -9,35 +9,18 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
 <header class="hdr">
-  <div>
-    <div class="logo">⚡ GymAddict</div>
-    <span class="logo-sub">HYBRID TRACKER</span>
-  </div>
+  <div><div class="logo">⚡ GymAddict</div><span class="logo-sub">HYBRID TRACKER</span></div>
   <div class="hdr-right">
     <div class="streak" id="streakBadge">🔥 0j</div>
     <div class="reg" id="regBadge">—%</div>
     <div class="save-ind" id="saveInd">✓ Enregistré</div>
   </div>
 </header>
-
-<div class="tab active" id="tab-today">
-  <div id="today-content"></div>
-</div>
-
-<div class="tab" id="tab-week">
-  <div id="week-content"></div>
-</div>
-
-<div class="tab" id="tab-stats">
-  <div id="stats-content"></div>
-</div>
-
-<div class="tab" id="tab-cardio">
-  <div id="cardio-content"></div>
-</div>
-
+<div class="tab active" id="tab-today"><div id="today-content"></div></div>
+<div class="tab" id="tab-week"><div id="week-content"></div></div>
+<div class="tab" id="tab-stats"><div id="stats-content"></div></div>
+<div class="tab" id="tab-cardio"><div id="cardio-content"></div></div>
 <div class="tmr" id="timerWidget">
   <div class="tmr-time" id="timerDisplay">3:00</div>
   <div class="tmr-info">
@@ -49,24 +32,18 @@
     <button class="btn-x" onclick="dismissTimer()">✕</button>
   </div>
 </div>
-
 <div class="pr-pop" id="prPopup">
   <div class="pr-emoji">🏆</div>
   <div class="pr-title">NOUVEAU RECORD !</div>
   <div class="pr-name" id="prPopName">—</div>
   <div class="pr-val" id="prPopVal">—</div>
 </div>
-
 <div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
 <div class="drawer" id="dayDrawer">
   <div class="drawer-handle"></div>
-  <div class="drawer-hdr">
-    <button class="drawer-close" onclick="closeDrawer()">✕</button>
-    <div class="drawer-title" id="drawerTitle">—</div>
-  </div>
+  <div class="drawer-hdr">...</div>
   <div class="drawer-body" id="drawerBody"></div>
 </div>
-
 <nav class="bnav">
   <button class="nbtn on" id="nav-today" onclick="switchTab('today')"><span class="ni">🏠</span>Aujourd'hui</button>
   <button class="nbtn" id="nav-week" onclick="switchTab('week')"><span class="ni">📅</span>Programme</button>
