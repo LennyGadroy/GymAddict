@@ -1,11 +1,11 @@
 const EX_LUNDI_JEUDI = [
-  {id:"tractions",      name:"Tractions",                               sets:3,repsLabel:"Max / 10",     defaultReps:10, type:"compound", muscles:["dos"],      restSec:180},
+  {id:"tractions",      name:"Tractions",                               sets:3,repsLabel:"Max / 10",      defaultReps:10, type:"compound", muscles:["dos"],      restSec:180},
   {id:"dips",           name:"Dips",                                    sets:3,repsLabel:"Max / 10-12",  defaultReps:10, type:"compound", muscles:["triceps"],  restSec:180},
   {id:"dev_couche",     name:"Développé couché (barre / haltères)",     sets:4,repsLabel:"8-10 reps",    defaultReps:10, type:"compound", muscles:["pecs"],     restSec:180},
   {id:"chest_fly",      name:"Chest fly (papillon)",                    sets:3,repsLabel:"12-15 reps",   defaultReps:12, type:"isolation",muscles:["pecs"],     restSec:90},
-  {id:"curl_pupitre",   name:"Curl Pupitre / Curl Marteau",             sets:3,repsLabel:"Max / 10",     defaultReps:10, type:"compound", muscles:["biceps"],   restSec:180},
+  {id:"curl_pupitre",   name:"Curl Pupitre / Curl Marteau",             sets:3,repsLabel:"Max / 10",      defaultReps:10, type:"compound", muscles:["biceps"],   restSec:180},
   {id:"curl_ez",        name:"Curl Barre EZ",                           sets:3,repsLabel:"10-12 reps",   defaultReps:10, type:"isolation",muscles:["biceps"],   restSec:90},
-  {id:"ext_triceps",    name:"Extension triceps (poulie haute)",        sets:3,repsLabel:"12-15 reps",   defaultReps:12, type:"isolation",muscles:["triceps"],  restSec:90},
+  {id:"ext_triceps",    name:"Extension triceps (poulie haute)",         sets:3,repsLabel:"12-15 reps",   defaultReps:12, type:"isolation",muscles:["triceps"], restSec:90},
   {id:"curl_biceps",    name:"Curl Biceps (poulie basse)",              sets:3,repsLabel:"12-15 reps",   defaultReps:12, type:"isolation",muscles:["biceps"],   restSec:90},
   {id:"pompes",         name:"Pompes",                                  sets:3,repsLabel:"10-15 reps",   defaultReps:12, type:"isolation",muscles:["pecs"],     restSec:90},
   {id:"releves_jambes", name:"Relevés de jambes",                       sets:4,repsLabel:"12-15 reps",   defaultReps:12, type:"isolation",muscles:["abdos"],    restSec:90},
@@ -15,14 +15,14 @@ const EX_LUNDI_JEUDI = [
 const EX_MARDI_VENDREDI = [
   {id:"tirage",         name:"Tirage vertical",                         sets:4,repsLabel:"Max / 10-12",  defaultReps:10, type:"compound", muscles:["dos"],      restSec:180},
   {id:"rowing_barre",   name:"Rowing barre / machine",                  sets:3,repsLabel:"10-12 reps",   defaultReps:10, type:"compound", muscles:["dos"],      restSec:180},
-  {id:"face_pulls",     name:"Face pulls (poulie haute)",               sets:3,repsLabel:"15 reps",      defaultReps:15, type:"isolation",muscles:["epaules"],  restSec:90},
-  {id:"dev_militaire",  name:"Développé militaire haltères",            sets:4,repsLabel:"8-10 reps",    defaultReps:10, type:"compound", muscles:["epaules"],  restSec:180},
-  {id:"elev_laterales", name:"Élévations latérales haltères",           sets:4,repsLabel:"15 reps",      defaultReps:15, type:"isolation",muscles:["epaules"],  restSec:90},
+  {id:"face_pulls",     name:"Face pulls (poulie haute)",               sets:3,repsLabel:"15 reps",      defaultReps:15, type:"isolation",muscles:["epaules"], restSec:90},
+  {id:"dev_militaire",  name:"Développé militaire haltères",            sets:4,repsLabel:"8-10 reps",    defaultReps:10, type:"compound", muscles:["epaules"], restSec:180},
+  {id:"elev_laterales", name:"Élévations latérales haltères",           sets:4,repsLabel:"15 reps",      defaultReps:15, type:"isolation",muscles:["epaules"], restSec:90},
 ];
 
 const EX_MERCREDI = [
-  {id:"dev_militaire",  name:"Développé militaire haltères",            sets:4,repsLabel:"8-10 reps",    defaultReps:10, type:"compound", muscles:["epaules"],  restSec:180},
-  {id:"elev_laterales", name:"Élévations latérales haltères",           sets:4,repsLabel:"15 reps",      defaultReps:15, type:"isolation",muscles:["epaules"],  restSec:90},
+  {id:"dev_militaire",  name:"Développé militaire haltères",            sets:4,repsLabel:"8-10 reps",    defaultReps:10, type:"compound", muscles:["epaules"], restSec:180},
+  {id:"elev_laterales", name:"Élévations latérales haltères",           sets:4,repsLabel:"15 reps",      defaultReps:15, type:"isolation",muscles:["epaules"], restSec:90},
   {id:"crunch_poulie",  name:"Crunch à la poulie haute",                sets:4,repsLabel:"15-20 reps",   defaultReps:15, type:"isolation",muscles:["abdos"],    restSec:90},
   {id:"releves_jambes", name:"Relevés de jambes",                       sets:4,repsLabel:"12-15 reps",   defaultReps:12, type:"isolation",muscles:["abdos"],    restSec:90},
   {id:"russian_twists", name:"Russian twists avec poids",               sets:3,repsLabel:"20 reps (x2)", defaultReps:20, type:"isolation",muscles:["abdos"],    restSec:60},
@@ -106,6 +106,278 @@ function getActiveDays(){const d=gs();return d.activeDays||[];}
 function getAge(){const d=gs();return d.age||25;}
 function saveAge(a){const d=gs();d.age=a;ss(d);}
 
+function getBodyWeight(){const d=gs();return d.bodyWeight||75;}
+function saveBodyWeight(w){const d=gs();d.bodyWeight=parseFloat(w)||75;ss(d);}
+
+function getExNote(dateKey,exId){
+  const d=gs();
+  return (d.exNotes&&d.exNotes[dateKey]&&d.exNotes[dateKey][exId])||{settings:'',rpe:''};
+}
+function saveExNote(dateKey,exId,field,val){
+  const d=gs();
+  if(!d.exNotes)d.exNotes={};
+  if(!d.exNotes[dateKey])d.exNotes[dateKey]={};
+  if(!d.exNotes[dateKey][exId])d.exNotes[dateKey][exId]={settings:'',rpe:''};
+  d.exNotes[dateKey][exId][field]=val;
+  ss(d);triggerSave();
+}
+
+function calc1RM(weight,reps){
+  if(!weight||!reps||reps<=0)return 0;
+  const w=parseFloat(weight),r=parseInt(reps);
+  if(r===1)return w;
+  if(r>36)return Math.round(w*0.5*10)/10;
+  return Math.round(w*(36/(37-r))*10)/10;
+}
+
+function getWarmupSets(workingWeight){
+  const w=parseFloat(workingWeight)||0;
+  if(!w)return[];
+  return [
+    {pct:40,reps:12,label:'Activation'},
+    {pct:60,reps:8,label:'Préparation'},
+    {pct:75,reps:5,label:'Mise en route'},
+    {pct:85,reps:3,label:'Approche'},
+    {pct:95,reps:1,label:'Activation neuro'},
+  ].map(s=>({...s,weight:Math.round(w*s.pct/100*2)/2}));
+}
+
+const FUN_EQ=[
+  {w:4,emoji:'🐱',name:'chat',names:'chats'},
+  {w:80,emoji:'🧑',name:'adulte',names:'adultes'},
+  {w:200,emoji:'🏍️',name:'moto',names:'motos'},
+  {w:600,emoji:'🐄',name:'vache',names:'vaches'},
+  {w:1500,emoji:'🚗',name:'voiture',names:'voitures'},
+  {w:6000,emoji:'🐘',name:"éléphant d'Afrique",names:"éléphants d'Afrique"},
+  {w:12000,emoji:'🚌',name:'bus',names:'bus'},
+];
+function getFunEquivalent(kg){
+  if(kg<=0)return null;
+  for(let i=FUN_EQ.length-1;i>=0;i--){
+    const count=kg/FUN_EQ[i].w;
+    if(count>=0.7){
+      const c=Math.round(count*10)/10;
+      return{emoji:FUN_EQ[i].emoji,count:c,name:c>1.4?FUN_EQ[i].names:FUN_EQ[i].name};
+    }
+  }
+  const c=Math.round(kg/FUN_EQ[0].w);
+  return{emoji:FUN_EQ[0].emoji,count:c,name:FUN_EQ[0].names};
+}
+
+function getReadiness(dateKey){const d=gs();return (d.readiness&&d.readiness[dateKey])||null;}
+function saveReadiness(dateKey,data){const d=gs();if(!d.readiness)d.readiness={};d.readiness[dateKey]=data;ss(d);}
+function computeReadinessScore(r){
+  if(!r)return null;
+  return Math.round(((parseInt(r.sleep||3))+(6-parseInt(r.stress||3))+(6-parseInt(r.soreness||3)))/3*10)/10;
+}
+
+function getTodayTonnage(){
+  const dateKey=todayKey(),dayName=getDayName();
+  const prog=PROGRAM[dayName];const d=gs();
+  if(!prog||!d.workouts||!d.workouts[dateKey])return 0;
+  let total=0;
+  prog.exercises.forEach(ex=>{
+    if(ex.isTime)return;
+    (d.workouts[dateKey][ex.id]||[]).forEach(s=>{
+      if(s&&s.done)total+=(parseFloat(s.weight)||0)*(parseFloat(s.reps)||ex.defaultReps||10);
+    });
+  });
+  return Math.round(total);
+}
+
+function getWeeklyTonnageHistory(exId){
+  const d=gs();if(!d.workouts)return[];
+  const weekMap={};
+  Object.keys(d.workouts).sort().forEach(dateKey=>{
+    const sets=(d.workouts[dateKey][exId]||[]).filter(s=>s&&s.done&&parseFloat(s.weight)>0);
+    if(!sets.length)return;
+    const dt=new Date(dateKey+'T12:00:00');
+    const dow=dt.getDay();
+    const monDt=new Date(dt);monDt.setDate(dt.getDate()-(dow===0?6:dow-1));
+    const wk=monDt.toISOString().split('T')[0];
+    if(!weekMap[wk])weekMap[wk]=0;
+    sets.forEach(s=>{weekMap[wk]+=(parseFloat(s.weight)||0)*(parseFloat(s.reps)||10);});
+  });
+  return Object.keys(weekMap).sort().map(wk=>({week:wk,tonnage:Math.round(weekMap[wk])}));
+}
+
+function renderHeatmap(){
+  const active=getActiveDays();const d=gs();
+  const dayTonnage={};
+  if(d.workouts){
+    Object.keys(d.workouts).forEach(dateKey=>{
+      let t=0;
+      Object.values(d.workouts[dateKey]).forEach(sets=>{
+        (sets||[]).forEach(s=>{if(s&&s.done)t+=((parseFloat(s.weight)||20)*(parseFloat(s.reps)||10));});
+      });
+      if(t>0)dayTonnage[dateKey]=t;
+    });
+  }
+  if(d.runLogs){
+    Object.keys(d.runLogs).forEach(dateKey=>{
+      if(d.runLogs[dateKey]&&d.runLogs[dateKey].done&&!dayTonnage[dateKey])dayTonnage[dateKey]=500;
+    });
+  }
+  const today=new Date();today.setHours(0,0,0,0);
+  const weeks=16;
+  const todayDow=today.getDay();
+  const daysFromMon=todayDow===0?6:todayDow-1;
+  const thisMonday=new Date(today);thisMonday.setDate(today.getDate()-daysFromMon);
+  const startDate=new Date(thisMonday);startDate.setDate(thisMonday.getDate()-((weeks-1)*7));
+  const tonnageVals=Object.values(dayTonnage).filter(v=>v>0);
+  const maxT=tonnageVals.length?Math.max(...tonnageVals):1;
+  const todayStr=todayKey();
+  let html='<div class="heatmap-wrap"><div class="heatmap-grid">';
+  html+='<div class="heatmap-labels"><div class="hm-day-label"></div>';
+  ['L','M','M','J','V','S','D'].forEach(l=>html+=`<div class="hm-day-label">${l}</div>`);
+  html+='</div>';
+  for(let w=0;w<weeks;w++){
+    const weekDate=new Date(startDate);weekDate.setDate(startDate.getDate()+w*7);
+    const monthLabel=weekDate.getDate()<=7?weekDate.toLocaleDateString('fr-FR',{month:'short'}):'';
+    html+=`<div class="heatmap-week"><div class="hm-month-lbl">${monthLabel}</div>`;
+    for(let dw=0;dw<7;dw++){
+      const dt=new Date(startDate);dt.setDate(startDate.getDate()+w*7+dw);
+      const key=dt.toISOString().split('T')[0];
+      const isFuture=dt>today;
+      const t=dayTonnage[key]||0;
+      const isActive=active.includes(key);
+      let lvl=0;
+      if(!isFuture&&(isActive||t>0)){
+        if(t>0)lvl=Math.min(4,Math.max(1,Math.ceil((t/maxT)*4)));
+        else lvl=1;
+      }
+      const isToday=key===todayStr;
+      html+=`<div class="hm-cell lvl${lvl}${isFuture?' future':''}${isToday?' hm-today':''}" title="${key}${t?' · '+Math.round(t)+'kg':''}"></div>`;
+    }
+    html+='</div>';
+  }
+  html+='</div><div class="hm-legend"><span class="hm-leg-txt">Moins</span>';
+  for(let i=0;i<=4;i++)html+=`<div class="hm-cell lvl${i}"></div>`;
+  html+='<span class="hm-leg-txt">Plus</span></div></div>';
+  return html;
+}
+
+let _readinessVals={sleep:3,stress:3,soreness:3};
+
+function showWarmupModal(exId,exName){
+  const pr=getPRs()[exId];
+  const w=pr?pr.weight:0;
+  const sets=getWarmupSets(w);
+  const oneRM=pr&&pr.reps?calc1RM(pr.weight,pr.reps):0;
+  const html=`<div class="modal-overlay" id="warmupModal" onclick="if(event.target.id==='warmupModal')closeModal()">
+    <div class="modal-box">
+      <div class="modal-hdr">
+        <div class="modal-title">🔥 Plan d'Échauffement</div>
+        <button class="drawer-close" onclick="closeModal()">✕</button>
+      </div>
+      <div style="font-size:13px;color:var(--dim);margin-bottom:4px">${exName}</div>
+      ${oneRM?`<div style="font-size:11px;color:var(--muted);margin-bottom:12px">1RM estimé: <b style="color:var(--orange)">${oneRM}kg</b></div>`:''}
+      <div class="warmup-inp-row" style="margin-bottom:14px">
+        <div><div style="font-size:11px;color:var(--dim);margin-bottom:4px">Charge de travail (kg)</div>
+        <input class="big-inp" type="number" id="warmupWtInp" value="${w||''}" placeholder="kg" inputmode="decimal" style="width:90px"></div>
+        <button class="btn-calc" onclick="refreshWarmup()">↻ Calc</button>
+      </div>
+      <div id="warmupSets">${w?renderWarmupSets(sets):'<div style="text-align:center;color:var(--muted);font-size:13px;padding:20px 0">Entre ton poids de travail ci-dessus</div>'}</div>
+    </div>
+  </div>`;
+  document.body.insertAdjacentHTML('beforeend',html);
+}
+
+function renderWarmupSets(sets){
+  if(!sets||!sets.length)return`<div style="text-align:center;color:var(--muted);font-size:13px;padding:20px 0">Aucune donnée</div>`;
+  return sets.map((s,i)=>`<div class="warmup-row">
+    <div class="warmup-num">${i+1}</div>
+    <div><div class="warmup-label">${s.label}</div><div class="warmup-reps">${s.reps} répétitions</div></div>
+    <div class="warmup-weight">${s.weight}<span style="font-size:12px;color:var(--muted);margin-left:3px">kg</span></div>
+    <div class="warmup-pct">${s.pct}%</div>
+  </div>`).join('');
+}
+
+function refreshWarmup(){
+  const inp=document.getElementById('warmupWtInp');
+  const w=parseFloat(inp?inp.value:0)||0;
+  const el=document.getElementById('warmupSets');
+  if(el)el.innerHTML=renderWarmupSets(getWarmupSets(w));
+}
+
+function closeModal(){
+  ['warmupModal','readinessModal'].forEach(id=>{
+    const m=document.getElementById(id);if(m)m.remove();
+  });
+}
+
+function showReadinessPopup(){
+  const dateKey=todayKey();
+  if(getReadiness(dateKey))return;
+  _readinessVals={sleep:3,stress:3,soreness:3};
+  const makeStars=(group)=>[1,2,3,4,5].map(i=>
+    `<button class="star-btn${i<=3?' s-active':''}" onclick="selectStar('${group}',${i})">${i<=3?'⭐':'☆'}</button>`
+  ).join('');
+  const html=`<div class="modal-overlay" id="readinessModal">
+    <div class="modal-box">
+      <div class="modal-hdr"><div class="modal-title">💪 Check-in Séance</div><button class="drawer-close" onclick="closeModal()">✕</button></div>
+      <div style="font-size:12px;color:var(--dim);margin-bottom:20px">Comment tu te sens aujourd'hui ?</div>
+      <div class="ready-item"><div class="ready-label">😴 Qualité du sommeil</div><div class="ready-stars" id="rs-sleep">${makeStars('sleep')}</div></div>
+      <div class="ready-item"><div class="ready-label">🧘 Stress <span style="color:var(--muted);font-weight:400">(1=zen · 5=max)</span></div><div class="ready-stars" id="rs-stress">${makeStars('stress')}</div></div>
+      <div class="ready-item"><div class="ready-label">💪 Courbatures <span style="color:var(--muted);font-weight:400">(1=aucune · 5=max)</span></div><div class="ready-stars" id="rs-soreness">${makeStars('soreness')}</div></div>
+      <button class="run-done-btn" style="margin-top:20px;font-size:14px;font-family:var(--fh);letter-spacing:1px" onclick="submitReadiness()">Démarrer 🚀</button>
+    </div>
+  </div>`;
+  document.body.insertAdjacentHTML('beforeend',html);
+}
+
+function selectStar(group,val){
+  _readinessVals[group]=val;
+  const c=document.getElementById('rs-'+group);
+  if(!c)return;
+  c.querySelectorAll('.star-btn').forEach((btn,i)=>{
+    const on=i<val;btn.textContent=on?'⭐':'☆';btn.classList.toggle('s-active',on);
+  });
+}
+
+function submitReadiness(){
+  const dateKey=todayKey();
+  const score=computeReadinessScore(_readinessVals);
+  saveReadiness(dateKey,{..._readinessVals,score});
+  closeModal();
+  if(score<2.5)showToast('😴 Fatigue détectée — réduis tes charges de 10–15%');
+  else if(score>=4)showToast('🔥 Forme olympique ! Lance-toi à fond !');
+  else showToast('💪 Bonne séance ! Reste à l\'écoute de ton corps');
+  _updateReadinessBadge(score);
+}
+
+function _updateReadinessBadge(score){
+  const el=document.getElementById('readinessBadge');
+  if(!el)return;
+  let rColor,rEmoji;
+  if(score>=4){rColor='var(--green)';rEmoji='🟢';}
+  else if(score>=2.5){rColor='var(--yellow)';rEmoji='🟡';}
+  else{rColor='var(--red)';rEmoji='🔴';}
+  el.innerHTML=`${rEmoji} ${score}/5`;
+  el.style.display='inline-flex';el.style.borderColor=rColor;el.style.color=rColor;
+}
+
+function showToast(msg){
+  const el=document.createElement('div');
+  el.className='toast';el.textContent=msg;
+  document.body.appendChild(el);
+  requestAnimationFrame(()=>el.classList.add('show'));
+  setTimeout(()=>{el.classList.remove('show');setTimeout(()=>el.remove(),400);},4000);
+}
+
+function updateTonnageCard(){
+  const el=document.getElementById('tonnageCard');
+  if(!el)return;
+  const t=getTodayTonnage();
+  if(t<=0){el.style.display='none';return;}
+  el.style.display='block';
+  const vEl=document.getElementById('tonnageVal');
+  const eEl=document.getElementById('tonnageEq');
+  if(vEl)vEl.textContent=t.toLocaleString('fr-FR')+' kg';
+  const eq=getFunEquivalent(t);
+  if(eEl)eEl.textContent=eq?`soit ${eq.count} ${eq.name} ${eq.emoji}`:'';
+}
+
 function computeStreak(){
   const active=getActiveDays();
   const today=new Date();today.setHours(0,0,0,0);
@@ -186,9 +458,21 @@ function checkAndShowPR(exId,exName,weight,reps){
     clearTimeout(_prTimer);
     document.getElementById('prPopName').textContent=exName;
     document.getElementById('prPopVal').textContent=w+' kg'+(r?' × '+r+' reps':'');
+    const ormEl=document.getElementById('prOnerm');
+    if(ormEl&&r>1){
+      const oneRM=calc1RM(w,r);
+      const bw=getBodyWeight();
+      const ratio=Math.round(oneRM/bw*100)/100;
+      const pcts=[100,95,90,85,80,75,70].map(p=>({p,v:Math.round(oneRM*p/100*2)/2}));
+      ormEl.innerHTML=`<div class="pr-1rm-line">1RM Brzycki: <b>${oneRM}kg</b> · <span style="color:var(--blue)">${ratio}× poids corps</span></div>
+        <div class="pr-pcts">${pcts.map(p=>`<div class="pr-pct-item"><div class="pr-pct-pct">${p.p}%</div><div class="pr-pct-w">${p.v}kg</div></div>`).join('')}</div>`;
+      ormEl.style.display='block';
+    } else if(ormEl){
+      ormEl.style.display='none';
+    }
     const pop=document.getElementById('prPopup');
     pop.classList.add('show');
-    _prTimer=setTimeout(()=>pop.classList.remove('show'),3500);
+    _prTimer=setTimeout(()=>pop.classList.remove('show'),6000);
     setTimeout(()=>document.querySelectorAll('.pr-flag[data-ex="'+exId+'"]').forEach(el=>el.style.display='inline-block'),100);
   }
 }
@@ -249,6 +533,7 @@ function getAllExercises(){
 function renderExBlock(ex,dateKey){
   const prs=getPRs();
   const exPR=prs[ex.id];
+  const note=getExNote(dateKey,ex.id);
   let badge='';
   if(ex.superset) badge=`<span class="badge b-superset">Superset ${ex.superset}</span>`;
   else if(ex.type==='compound') badge=`<span class="badge b-compound">Compound · 3min</span>`;
@@ -284,6 +569,9 @@ function renderExBlock(ex,dateKey){
     </div>`;
   }
 
+  const safeNameDisplay=ex.name.replace(/'/g,"\\'").replace(/"/g,'&quot;');
+  const noteEscaped=(note.settings||'').replace(/"/g,'&quot;');
+
   return `
   <div class="ex-block">
     <div class="ex-header">
@@ -293,6 +581,20 @@ function renderExBlock(ex,dateKey){
     <div class="ex-meta">📊 ${ex.sets} séries · ${ex.repsLabel}${exPR?` · 🏆 PR: <b style="color:var(--orange)">${exPR.weight}kg × ${exPR.reps}reps</b>`:''}
     </div>
     <div class="sets-wrap">${setRows}</div>
+    <div class="ex-notes">
+      <input class="ex-note-inp" type="text" placeholder="⚙️ Réglages machine (ex: Siège cran 4, prise large...)"
+        value="${noteEscaped}"
+        onchange="debounce('ns-${ex.id}-${dateKey}',()=>{saveExNote('${dateKey}','${ex.id}','settings',this.value);},600)">
+      <div class="ex-note-rpe-row">
+        <div class="rpe-wrap">
+          <span class="set-lbl">RPE /10</span>
+          <input class="si rpe-inp" type="number" inputmode="numeric" min="1" max="10" placeholder="—"
+            value="${note.rpe||''}"
+            onchange="debounce('nr-${ex.id}-${dateKey}',()=>{saveExNote('${dateKey}','${ex.id}','rpe',this.value);},400)">
+        </div>
+        ${!ex.isTime?`<button class="warmup-btn" onclick="showWarmupModal('${ex.id}','${safeNameDisplay}')">🔥 Warm-up</button>`:''}
+      </div>
+    </div>
   </div>`;
 }
 
@@ -313,6 +615,7 @@ function toggleSet(dateKey,exId,idx,exName,restSec){
     if(wv) checkAndShowPR(exId,exName,wv,rv);
   }
   updateDayProgressBar(dateKey);
+  updateTonnageCard();
 }
 
 function onWeightChange(dateKey,exId,idx,exName,val){
@@ -356,11 +659,28 @@ function renderToday(){
     return;
   }
   const p=getDayProgress(dateKey,dayName);
+  const readiness=getReadiness(dateKey);
+  let rBadgeHtml='';
+  if(readiness){
+    const score=readiness.score||computeReadinessScore(readiness);
+    let rColor,rEmoji;
+    if(score>=4){rColor='var(--green)';rEmoji='🟢';}
+    else if(score>=2.5){rColor='var(--yellow)';rEmoji='🟡';}
+    else{rColor='var(--red)';rEmoji='🔴';}
+    rBadgeHtml=`<div id="readinessBadge" class="readiness-chip" style="border-color:${rColor};color:${rColor};display:inline-flex">${rEmoji} ${score}/5</div>`;
+  } else {
+    rBadgeHtml=`<div id="readinessBadge" class="readiness-chip" style="display:none"></div>`;
+  }
+  const tonnage=getTodayTonnage();
+  const eq=getFunEquivalent(tonnage);
   let html=`
   <div class="chip">📅 ${prog.label} — ${new Date().toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'})}</div>
   <div class="card green-glow">
-    <div class="card-title">${prog.icon} ${prog.fullName}</div>
-    <div class="card-sub">${prog.type==='gym+run'?'🏋️ Salle + 🏃 Running':'🏋️ Salle de sport'}</div>
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:4px">
+      <div><div class="card-title">${prog.icon} ${prog.fullName}</div>
+      <div class="card-sub">${prog.type==='gym+run'?'🏋️ Salle + 🏃 Running':'🏋️ Salle de sport'}</div></div>
+      ${rBadgeHtml}
+    </div>
     <div class="prog-txt" id="progtxt-${dateKey}">${p.done}/${p.total} séries · ${p.pct}%</div>
     <div class="prog-wrap"><div class="prog-fill" id="prog-${dateKey}" style="width:${p.pct}%"></div></div>
   </div>`;
@@ -370,7 +690,18 @@ function renderToday(){
     html+=`</div>`;
   }
   if(prog.running) html+=buildRunCard(prog.running,dateKey,'runBtn','toggleRunDone');
+  html+=`<div class="card tonnage-card" id="tonnageCard" style="${tonnage>0?'display:block':'display:none'}">
+    <div style="display:flex;align-items:center;gap:14px">
+      <div style="font-size:38px">${eq?eq.emoji:'⚡'}</div>
+      <div>
+        <div style="font-family:var(--fh);font-size:13px;font-weight:700;color:var(--dim);letter-spacing:1px;text-transform:uppercase">Tonnage d'aujourd'hui</div>
+        <div id="tonnageVal" style="font-family:var(--fm);font-size:26px;font-weight:700;color:var(--green)">${tonnage.toLocaleString('fr-FR')} kg</div>
+        <div id="tonnageEq" style="font-size:12px;color:var(--dim)">${eq?`soit ${eq.count} ${eq.name} ${eq.emoji}`:''}</div>
+      </div>
+    </div>
+  </div>`;
   el.innerHTML=html;
+  setTimeout(()=>showReadinessPopup(),900);
 }
 
 function buildRunCard(running,dateKey,btnId,toggleFn){
@@ -447,65 +778,81 @@ let radarChart=null, weightChart=null, _chartMode='max';
 
 function renderStats(){
   const prs=getPRs();
+  const bw=getBodyWeight();
   const prEntries=Object.entries(prs).sort((a,b)=>b[1].weight-a[1].weight);
   let prHtml='';
   if(!prEntries.length){
     prHtml=`<div class="empty">Aucun record enregistré.<br>Entre tes charges pour les voir ici !</div>`;
   } else {
     prEntries.slice(0,20).forEach(([id,pr])=>{
+      const ratio=Math.round(pr.weight/bw*100)/100;
+      const oneRM=pr.reps>1?calc1RM(pr.weight,pr.reps):pr.weight;
       prHtml+=`<div class="pr-item">
         <div><div class="pr-item-name">${findExName(id)||id}</div>
-        <div class="pr-item-day">📅 ${pr.date||'—'}${pr.reps?' · '+pr.reps+' reps':''}</div></div>
-        <div class="pr-item-w">${pr.weight} kg</div>
+        <div class="pr-item-day">📅 ${pr.date||'—'}${pr.reps?' · '+pr.reps+' reps':''} · 1RM~${oneRM}kg</div></div>
+        <div style="text-align:right">
+          <div class="pr-item-w">${pr.weight} kg</div>
+          <div style="font-family:var(--fm);font-size:10px;color:var(--blue)">${ratio}× BW</div>
+        </div>
       </div>`;
     });
   }
-
   const allEx=getAllExercises();
   const exOptions=allEx.map(e=>`<option value="${e.id}">${e.name}</option>`).join('');
-
   document.getElementById('stats-content').innerHTML=`
   <div class="chip">📊 Coach Data</div>
   <div class="stats-grid">
     <div class="stat-card"><div class="stat-v" style="color:var(--orange)">${computeStreak()}</div><div class="stat-l">🔥 Jours de streak</div></div>
     <div class="stat-card"><div class="stat-v" style="color:var(--green)">${computeReg()}%</div><div class="stat-l">📈 Régularité 7j</div></div>
   </div>
-
   <div class="card" style="margin-bottom:12px">
-    <div class="stitle">📈 Évolution des charges</div>
+    <div class="stitle">📅 Calendrier d'activité</div>
+    ${renderHeatmap()}
+  </div>
+  <div class="card" style="margin-bottom:12px">
+    <div class="stitle">📈 Évolution des charges & Volume</div>
     <div style="display:flex;gap:8px;margin-bottom:14px;align-items:center;flex-wrap:wrap">
       <select id="exSelect" class="si" style="flex:1;text-align:left;font-size:12px;padding:8px" onchange="renderWeightChart()">
         ${exOptions}
       </select>
-      <div style="display:flex;gap:6px">
-        <button id="chartMaxBtn" onclick="setChartMode('max')"
-          class="badge ${_chartMode==='max'?'b-compound':'b-rest'}" style="cursor:pointer;padding:6px 10px;font-size:11px">Max</button>
-        <button id="chartAvgBtn" onclick="setChartMode('avg')"
-          class="badge ${_chartMode==='avg'?'b-isolation':'b-rest'}" style="cursor:pointer;padding:6px 10px;font-size:11px">Moy</button>
+      <div style="display:flex;gap:5px;flex-wrap:wrap">
+        <button id="chartMaxBtn" onclick="setChartMode('max')" class="badge ${_chartMode==='max'?'b-compound':'b-rest'}" style="cursor:pointer;padding:6px 8px;font-size:10px">Max</button>
+        <button id="chartAvgBtn" onclick="setChartMode('avg')" class="badge ${_chartMode==='avg'?'b-isolation':'b-rest'}" style="cursor:pointer;padding:6px 8px;font-size:10px">Moy</button>
+        <button id="chartTonBtn" onclick="setChartMode('tonnage')" class="badge ${_chartMode==='tonnage'?'b-superset':'b-rest'}" style="cursor:pointer;padding:6px 8px;font-size:10px">Tonnage</button>
       </div>
     </div>
     <div style="position:relative;height:190px"><canvas id="weightChart"></canvas></div>
     <div id="weightChartEmpty" class="empty" style="display:none">Aucune donnée pour cet exercice.<br>Lance ta première séance !</div>
   </div>
-
   <div class="radar-wrap">
     <div class="stitle">Répartition Musculaire <span style="font-size:10px;color:var(--dim)">(7 derniers jours)</span></div>
     <canvas id="radarChart" height="250"></canvas>
   </div>
-
-  <div class="card">
-    <div class="stitle">🏆 Panthéon des Records (PR)</div>
+  <div class="card" style="margin-bottom:12px">
+    <div class="stitle">🏆 Records Personnels</div>
+    <div class="bw-row">
+      <div class="bw-lbl">⚖️ Poids de corps :</div>
+      <input class="big-inp" type="number" id="bwInp" value="${bw}" min="30" max="200" inputmode="decimal" style="width:75px">
+      <span class="bw-lbl">kg</span>
+      <button class="btn-calc" onclick="saveBWAndRefresh()" style="padding:8px 12px;font-size:13px">✓</button>
+    </div>
     ${prHtml}
   </div>`;
-
   setTimeout(()=>{ drawRadar(); renderWeightChart(); },80);
+}
+
+function saveBWAndRefresh(){
+  const inp=document.getElementById('bwInp');
+  if(inp)saveBodyWeight(inp.value);
+  renderStats();
 }
 
 function setChartMode(mode){
   _chartMode=mode;
-  const mb=document.getElementById('chartMaxBtn'), ab=document.getElementById('chartAvgBtn');
+  const mb=document.getElementById('chartMaxBtn'), ab=document.getElementById('chartAvgBtn'), tb=document.getElementById('chartTonBtn');
   if(mb)mb.className='badge '+(mode==='max'?'b-compound':'b-rest');
   if(ab)ab.className='badge '+(mode==='avg'?'b-isolation':'b-rest');
+  if(tb)tb.className='badge '+(mode==='tonnage'?'b-superset':'b-rest');
   renderWeightChart();
 }
 
@@ -513,10 +860,27 @@ function renderWeightChart(){
   const sel=document.getElementById('exSelect');
   if(!sel)return;
   const exId=sel.value;
-  const hist=getWeightHistory(exId);
   const empty=document.getElementById('weightChartEmpty');
   const canvas=document.getElementById('weightChart');
   if(weightChart){weightChart.destroy();weightChart=null;}
+  if(_chartMode==='tonnage'){
+    const hist=getWeeklyTonnageHistory(exId);
+    if(!hist.length){
+      if(canvas)canvas.style.display='none';
+      if(empty)empty.style.display='block';
+      return;
+    }
+    if(canvas)canvas.style.display='block';
+    if(empty)empty.style.display='none';
+    const labels=hist.map(h=>h.week.slice(5));
+    const data=hist.map(h=>h.tonnage);
+    const ctx=canvas.getContext('2d');
+    const grad=ctx.createLinearGradient(0,0,0,190);
+    grad.addColorStop(0,'rgba(251,146,60,0.3)');grad.addColorStop(1,'rgba(251,146,60,0)');
+    weightChart=new Chart(ctx,{type:'bar',data:{labels,datasets:[{label:'Tonnage (kg·reps)',data,backgroundColor:'rgba(251,146,60,0.6)',borderColor:'#fb923c',borderWidth:2,borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.parsed.y.toLocaleString('fr-FR')+' kg·reps'},backgroundColor:'#1a1a35',titleColor:'#e8e8f5',bodyColor:'#fb923c'}},scales:{x:{grid:{color:'rgba(255,255,255,0.05)'},ticks:{color:'#8a90a8',font:{size:10,family:'JetBrains Mono'}}},y:{grid:{color:'rgba(255,255,255,0.05)'},ticks:{color:'#8a90a8',font:{size:10,family:'JetBrains Mono'},callback:v=>v+'kg'},beginAtZero:true}}}});
+    return;
+  }
+  const hist=getWeightHistory(exId);
   if(!hist.length){
     if(canvas)canvas.style.display='none';
     if(empty)empty.style.display='block';
@@ -532,30 +896,8 @@ function renderWeightChart(){
   grad.addColorStop(1,'rgba(34,217,122,0)');
   weightChart=new Chart(ctx,{
     type:'line',
-    data:{
-      labels,
-      datasets:[{
-        label:_chartMode==='max'?'Charge max (kg)':'Charge moy (kg)',
-        data,fill:true,
-        backgroundColor:grad,
-        borderColor:'#22d97a',
-        pointBackgroundColor:'#22d97a',
-        pointBorderColor:'#060611',
-        pointRadius:4,pointHoverRadius:6,
-        tension:0.35,borderWidth:2,
-      }]
-    },
-    options:{
-      responsive:true,maintainAspectRatio:false,
-      plugins:{
-        legend:{display:false},
-        tooltip:{callbacks:{label:c=>c.parsed.y+' kg'},backgroundColor:'#1a1a35',titleColor:'#e8e8f5',bodyColor:'#22d97a'}
-      },
-      scales:{
-        x:{grid:{color:'rgba(255,255,255,0.05)'},ticks:{color:'#8a90a8',font:{size:10,family:'JetBrains Mono'}}},
-        y:{grid:{color:'rgba(255,255,255,0.05)'},ticks:{color:'#8a90a8',font:{size:10,family:'JetBrains Mono'},callback:v=>v+'kg'},beginAtZero:false}
-      }
-    }
+    data:{labels,datasets:[{label:_chartMode==='max'?'Charge max (kg)':'Charge moy (kg)',data,fill:true,backgroundColor:grad,borderColor:'#22d97a',pointBackgroundColor:'#22d97a',pointBorderColor:'#060611',pointRadius:4,pointHoverRadius:6,tension:0.35,borderWidth:2}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.parsed.y+' kg'},backgroundColor:'#1a1a35',titleColor:'#e8e8f5',bodyColor:'#22d97a'}},scales:{x:{grid:{color:'rgba(255,255,255,0.05)'},ticks:{color:'#8a90a8',font:{size:10,family:'JetBrains Mono'}}},y:{grid:{color:'rgba(255,255,255,0.05)'},ticks:{color:'#8a90a8',font:{size:10,family:'JetBrains Mono'},callback:v=>v+'kg'},beginAtZero:false}}}
   });
 }
 
@@ -644,7 +986,6 @@ function renderCardio(){
       </button>
     </div>`;
   });
-
   document.getElementById('cardio-content').innerHTML=`
   <div class="chip">🏃 Séances Running & Cardio</div>
   ${runCardsHtml}
