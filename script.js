@@ -1,9 +1,9 @@
 const EX_LUNDI_JEUDI = [
-  {id:"tractions",      name:"Tractions",                               sets:3,repsLabel:"Max / 10",      defaultReps:10, type:"compound", muscles:["dos"],      restSec:180},
+  {id:"tractions",      name:"Tractions",                               sets:3,repsLabel:"Max / 10",    defaultReps:10, type:"compound", muscles:["dos"],      restSec:180},
   {id:"dips",           name:"Dips",                                    sets:3,repsLabel:"Max / 10-12",  defaultReps:10, type:"compound", muscles:["triceps"],  restSec:180},
   {id:"dev_couche",     name:"Développé couché (barre / haltères)",     sets:4,repsLabel:"8-10 reps",    defaultReps:10, type:"compound", muscles:["pecs"],     restSec:180},
   {id:"chest_fly",      name:"Chest fly (papillon)",                    sets:3,repsLabel:"12-15 reps",   defaultReps:12, type:"isolation",muscles:["pecs"],     restSec:90},
-  {id:"curl_pupitre",   name:"Curl Pupitre / Curl Marteau",             sets:3,repsLabel:"Max / 10",      defaultReps:10, type:"compound", muscles:["biceps"],   restSec:180},
+  {id:"curl_pupitre",   name:"Curl Pupitre / Curl Marteau",             sets:3,repsLabel:"Max / 10",     defaultReps:10, type:"compound", muscles:["biceps"],   restSec:180},
   {id:"curl_ez",        name:"Curl Barre EZ",                           sets:3,repsLabel:"10-12 reps",   defaultReps:10, type:"isolation",muscles:["biceps"],   restSec:90},
   {id:"ext_triceps",    name:"Extension triceps (poulie haute)",         sets:3,repsLabel:"12-15 reps",   defaultReps:12, type:"isolation",muscles:["triceps"], restSec:90},
   {id:"curl_biceps",    name:"Curl Biceps (poulie basse)",              sets:3,repsLabel:"12-15 reps",   defaultReps:12, type:"isolation",muscles:["biceps"],   restSec:90},
@@ -16,12 +16,12 @@ const EX_MARDI_VENDREDI = [
   {id:"tirage",         name:"Tirage vertical",                         sets:4,repsLabel:"Max / 10-12",  defaultReps:10, type:"compound", muscles:["dos"],      restSec:180},
   {id:"rowing_barre",   name:"Rowing barre / machine",                  sets:3,repsLabel:"10-12 reps",   defaultReps:10, type:"compound", muscles:["dos"],      restSec:180},
   {id:"face_pulls",     name:"Face pulls (poulie haute)",               sets:3,repsLabel:"15 reps",      defaultReps:15, type:"isolation",muscles:["epaules"], restSec:90},
-  {id:"dev_militaire",  name:"Développé militaire haltères",            sets:4,repsLabel:"8-10 reps",    defaultReps:10, type:"compound", muscles:["epaules"], restSec:180},
+  {id:"dev_militaire",  name:"Développé militaire haltères",             sets:4,repsLabel:"8-10 reps",    defaultReps:10, type:"compound", muscles:["epaules"], restSec:180},
   {id:"elev_laterales", name:"Élévations latérales haltères",           sets:4,repsLabel:"15 reps",      defaultReps:15, type:"isolation",muscles:["epaules"], restSec:90},
 ];
 
 const EX_MERCREDI = [
-  {id:"dev_militaire",  name:"Développé militaire haltères",            sets:4,repsLabel:"8-10 reps",    defaultReps:10, type:"compound", muscles:["epaules"], restSec:180},
+  {id:"dev_militaire",  name:"Développé militaire haltères",             sets:4,repsLabel:"8-10 reps",    defaultReps:10, type:"compound", muscles:["epaules"], restSec:180},
   {id:"elev_laterales", name:"Élévations latérales haltères",           sets:4,repsLabel:"15 reps",      defaultReps:15, type:"isolation",muscles:["epaules"], restSec:90},
   {id:"crunch_poulie",  name:"Crunch à la poulie haute",                sets:4,repsLabel:"15-20 reps",   defaultReps:15, type:"isolation",muscles:["abdos"],    restSec:90},
   {id:"releves_jambes", name:"Relevés de jambes",                       sets:4,repsLabel:"12-15 reps",   defaultReps:12, type:"isolation",muscles:["abdos"],    restSec:90},
@@ -168,7 +168,7 @@ function getReadiness(dateKey){const d=gs();return (d.readiness&&d.readiness[dat
 function saveReadiness(dateKey,data){const d=gs();if(!d.readiness)d.readiness={};d.readiness[dateKey]=data;ss(d);}
 function computeReadinessScore(r){
   if(!r)return null;
-  return Math.round(((parseInt(r.sleep||3))+(6-parseInt(r.stress||3))+(6-parseInt(r.soreness||3)))/3*10)/10;
+  return Math.round(((parseInt(r.sleep||3))+(parseInt(r.stress||3))+(parseInt(r.soreness||3)))/3*10)/10;
 }
 
 function getTodayTonnage(){
@@ -301,7 +301,7 @@ function refreshWarmup(){
 }
 
 function closeModal(){
-  ['warmupModal','readinessModal'].forEach(id=>{
+  ['warmupModal','readinessModal','resetModal'].forEach(id=>{
     const m=document.getElementById(id);if(m)m.remove();
   });
 }
@@ -310,16 +310,30 @@ function showReadinessPopup(){
   const dateKey=todayKey();
   if(getReadiness(dateKey))return;
   _readinessVals={sleep:3,stress:3,soreness:3};
-  const makeStars=(group)=>[1,2,3,4,5].map(i=>
-    `<button class="star-btn${i<=3?' s-active':''}" onclick="selectStar('${group}',${i})">${i<=3?'⭐':'☆'}</button>`
+  const makeStars=(group,defaultVal=3)=>[1,2,3,4,5].map(i=>
+    `<button class="star-btn${i<=defaultVal?' s-active':''}" onclick="selectStar('${group}',${i})">${i<=defaultVal?'⭐':'☆'}</button>`
   ).join('');
+  const pseudo=getProfile().pseudo||'Athlète';
   const html=`<div class="modal-overlay" id="readinessModal">
     <div class="modal-box">
       <div class="modal-hdr"><div class="modal-title">💪 Check-in Séance</div><button class="drawer-close" onclick="closeModal()">✕</button></div>
-      <div style="font-size:12px;color:var(--dim);margin-bottom:20px">Comment tu te sens aujourd'hui ?</div>
-      <div class="ready-item"><div class="ready-label">😴 Qualité du sommeil</div><div class="ready-stars" id="rs-sleep">${makeStars('sleep')}</div></div>
-      <div class="ready-item"><div class="ready-label">🧘 Stress <span style="color:var(--muted);font-weight:400">(1=zen · 5=max)</span></div><div class="ready-stars" id="rs-stress">${makeStars('stress')}</div></div>
-      <div class="ready-item"><div class="ready-label">💪 Courbatures <span style="color:var(--muted);font-weight:400">(1=aucune · 5=max)</span></div><div class="ready-stars" id="rs-soreness">${makeStars('soreness')}</div></div>
+      <div style="font-size:12px;color:var(--dim);margin-bottom:20px">Salut <b style="color:var(--green)">${pseudo}</b> ! Comment tu te sens aujourd'hui ?</div>
+      <div style="font-size:10px;color:var(--muted);margin-bottom:16px;text-align:center;font-family:var(--fm)">1 = Très mauvais &nbsp;·&nbsp; 5 = Parfait</div>
+      <div class="ready-item">
+        <div class="ready-label">😴 Qualité du sommeil</div>
+        <div class="ready-scale-labels"><span>😩</span><span>😐</span><span>😄</span></div>
+        <div class="ready-stars" id="rs-sleep">${makeStars('sleep',3)}</div>
+      </div>
+      <div class="ready-item">
+        <div class="ready-label">🧘 Niveau d'énergie / Stress</div>
+        <div class="ready-scale-labels"><span>😩 Épuisé</span><span>💪 Plein de feu</span></div>
+        <div class="ready-stars" id="rs-stress">${makeStars('stress',3)}</div>
+      </div>
+      <div class="ready-item">
+        <div class="ready-label">💪 État musculaire</div>
+        <div class="ready-scale-labels"><span>😩 Courbaturé</span><span>✅ Frais</span></div>
+        <div class="ready-stars" id="rs-soreness">${makeStars('soreness',3)}</div>
+      </div>
       <button class="run-done-btn" style="margin-top:20px;font-size:14px;font-family:var(--fh);letter-spacing:1px" onclick="submitReadiness()">Démarrer 🚀</button>
     </div>
   </div>`;
@@ -340,9 +354,10 @@ function submitReadiness(){
   const score=computeReadinessScore(_readinessVals);
   saveReadiness(dateKey,{..._readinessVals,score});
   closeModal();
-  if(score<2.5)showToast('😴 Fatigue détectée — réduis tes charges de 10–15%');
-  else if(score>=4)showToast('🔥 Forme olympique ! Lance-toi à fond !');
-  else showToast('💪 Bonne séance ! Reste à l\'écoute de ton corps');
+  if(score<=2)showToast('😴 Forme basse détectée — réduis tes charges de 10–15%');
+  else if(score<=3)showToast('💪 Forme correcte — écoute ton corps en séance');
+  else if(score>=4.5)showToast('🔥 Forme olympique ! Pulvérise tes records !');
+  else showToast('⚡ Bonne forme ! Tu vas assurer aujourd\'hui');
   _updateReadinessBadge(score);
 }
 
@@ -351,7 +366,7 @@ function _updateReadinessBadge(score){
   if(!el)return;
   let rColor,rEmoji;
   if(score>=4){rColor='var(--green)';rEmoji='🟢';}
-  else if(score>=2.5){rColor='var(--yellow)';rEmoji='🟡';}
+  else if(score>=3){rColor='var(--yellow)';rEmoji='🟡';}
   else{rColor='var(--red)';rEmoji='🔴';}
   el.innerHTML=`${rEmoji} ${score}/5`;
   el.style.display='inline-flex';el.style.borderColor=rColor;el.style.color=rColor;
@@ -544,7 +559,7 @@ function renderExBlock(ex,dateKey){
   for(let i=0;i<ex.sets;i++){
     const s=getSet(dateKey,ex.id,i);
     const dispW = s.weight!=='' ? s.weight : (exPR ? exPR.weight : '');
-    const dispR = s.reps!==''   ? s.reps   : (ex.defaultReps||'');
+    const dispR = s.reps!==''   ? s.reps    : (ex.defaultReps||'');
     const isPR  = exPR && dispW && parseFloat(dispW)>=exPR.weight;
     const safeName=ex.name.replace(/'/g,"\\'");
     setRows+=`
@@ -665,7 +680,7 @@ function renderToday(){
     const score=readiness.score||computeReadinessScore(readiness);
     let rColor,rEmoji;
     if(score>=4){rColor='var(--green)';rEmoji='🟢';}
-    else if(score>=2.5){rColor='var(--yellow)';rEmoji='🟡';}
+    else if(score>=3){rColor='var(--yellow)';rEmoji='🟡';}
     else{rColor='var(--red)';rEmoji='🔴';}
     rBadgeHtml=`<div id="readinessBadge" class="readiness-chip" style="border-color:${rColor};color:${rColor};display:inline-flex">${rEmoji} ${score}/5</div>`;
   } else {
@@ -1064,7 +1079,161 @@ function closeDrawer(){
   renderWeek();
 }
 
-const TABS=['today','week','stats','cardio'];
+const AVATARS=['💪','🏋️','🔥','⚡','🦁','🐺','🦅','🏆','👊','🎯','🚀','🧠','🐉','⚔️','🌟'];
+
+function getProfile(){const d=gs();return d.profile||{pseudo:'',avatar:'💪',since:todayKey()};}
+function saveProfile(p){const d=gs();d.profile={...getProfile(),...p};ss(d);triggerSave();}
+
+function getTotalSessions(){return getActiveDays().length;}
+function getTotalTonnageAllTime(){
+  const d=gs();if(!d.workouts)return 0;
+  let total=0;
+  Object.values(d.workouts).forEach(day=>{
+    Object.values(day).forEach(sets=>{
+      (sets||[]).forEach(s=>{if(s&&s.done&&!isNaN(parseFloat(s.weight)))total+=(parseFloat(s.weight)||0)*(parseFloat(s.reps)||10);});
+    });
+  });
+  return Math.round(total);
+}
+
+function renderProfile(){
+  const prof=getProfile();
+  const pseudo=prof.pseudo||'';
+  const avatar=prof.avatar||'💪';
+  const since=prof.since||todayKey();
+  const streak=computeStreak();
+  const reg=computeReg();
+  const sessions=getTotalSessions();
+  const tonnage=getTotalTonnageAllTime();
+  const eq=getFunEquivalent(tonnage);
+  const bw=getBodyWeight();
+  const age=getAge();
+
+  const sinceDate=new Date(since+'T12:00:00');
+  const daysSince=Math.round((new Date()-sinceDate)/(1000*60*60*24));
+
+  const avatarGrid=AVATARS.map(a=>`<button class="avatar-opt${a===avatar?' selected':''}" onclick="selectAvatar('${a}')">${a}</button>`).join('');
+
+  document.getElementById('profile-content').innerHTML=`
+  <div class="chip">👤 Mon Profil</div>
+  <div class="card profile-card green-glow">
+    <div class="profile-top">
+      <div class="avatar-display" id="avatarDisplay" onclick="toggleAvatarPicker()">${avatar}</div>
+      <div class="profile-info">
+        <input class="profile-pseudo-inp" id="pseudoInp" type="text" placeholder="Ton pseudonyme…"
+          value="${pseudo}" maxlength="24" autocomplete="off" spellcheck="false"
+          oninput="debounce('pseudo',()=>{saveProfile({pseudo:document.getElementById('pseudoInp').value.trim()});updateHeaderGreeting();},600)">
+        <div class="profile-since">Membre depuis ${sinceDate.toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'})} · <b style="color:var(--green)">${daysSince}j</b></div>
+      </div>
+    </div>
+    <div class="avatar-picker" id="avatarPicker" style="display:none">
+      <div style="font-size:10px;color:var(--muted);margin-bottom:8px;font-family:var(--fm);letter-spacing:1px">CHOISIS TON AVATAR</div>
+      <div class="avatar-grid">${avatarGrid}</div>
+    </div>
+  </div>
+
+  <div class="stitle">🏆 Mes Statistiques</div>
+  <div class="stats-grid">
+    <div class="stat-card"><div class="stat-v" style="color:var(--orange)">${streak}</div><div class="stat-l">🔥 Streak</div></div>
+    <div class="stat-card"><div class="stat-v" style="color:var(--green)">${sessions}</div><div class="stat-l">💪 Séances totales</div></div>
+    <div class="stat-card"><div class="stat-v" style="color:var(--blue)">${reg}%</div><div class="stat-l">📈 Régularité 7j</div></div>
+    <div class="stat-card"><div class="stat-v" style="color:var(--purple);font-size:22px">${tonnage>0?(tonnage/1000).toFixed(1)+'t':'—'}</div><div class="stat-l">⚖️ Tonnage total</div></div>
+  </div>
+  ${tonnage>0&&eq?`<div class="card" style="text-align:center;padding:14px;margin-bottom:12px">
+    <div style="font-size:32px;margin-bottom:6px">${eq.emoji}</div>
+    <div style="font-family:var(--fm);font-size:12px;color:var(--dim)">Tu as soulevé l'équivalent de</div>
+    <div style="font-family:var(--fh);font-size:20px;font-weight:700;color:var(--text)">${eq.count} ${eq.name}</div>
+    <div style="font-size:10px;color:var(--muted);margin-top:2px">au total sur tous tes entraînements</div>
+  </div>`:''}
+
+  <div class="stitle">⚙️ Mes Données</div>
+  <div class="card" style="margin-bottom:12px">
+    <div class="bw-row" style="margin-bottom:14px">
+      <div class="bw-lbl">⚖️ Poids de corps</div>
+      <input class="big-inp" type="number" id="profBwInp" value="${bw}" min="30" max="200" inputmode="decimal" style="width:75px">
+      <span class="bw-lbl">kg</span>
+      <button class="btn-calc" onclick="saveProfBW()" style="padding:8px 12px;font-size:13px">✓</button>
+    </div>
+    <div class="bw-row">
+      <div class="bw-lbl">🎂 Âge</div>
+      <input class="big-inp" type="number" id="profAgeInp" value="${age}" min="10" max="99" inputmode="numeric" style="width:75px">
+      <span class="bw-lbl">ans</span>
+      <button class="btn-calc" onclick="saveProfAge()" style="padding:8px 12px;font-size:13px">✓</button>
+    </div>
+  </div>
+
+  <div class="stitle">⚠️ Zone Danger</div>
+  <div class="card danger-card">
+    <div style="font-size:13px;color:var(--dim);margin-bottom:14px;line-height:1.5">
+      Réinitialise <b>toutes</b> tes données : séances, records, tonnage, streak, check-ins.<br>
+      <span style="color:var(--red);font-size:11px">⚠️ Cette action est irréversible.</span>
+    </div>
+    <button class="btn-danger" onclick="confirmReset()">🗑️ Réinitialiser toutes les données</button>
+  </div>`;
+}
+
+function updateHeaderGreeting(){}
+
+function toggleAvatarPicker(){
+  const el=document.getElementById('avatarPicker');
+  if(el)el.style.display=el.style.display==='none'?'block':'none';
+}
+
+function selectAvatar(a){
+  saveProfile({avatar:a});
+  const disp=document.getElementById('avatarDisplay');
+  if(disp)disp.textContent=a;
+  document.querySelectorAll('.avatar-opt').forEach(btn=>{
+    btn.classList.toggle('selected',btn.textContent===a);
+  });
+  const picker=document.getElementById('avatarPicker');
+  if(picker)picker.style.display='none';
+}
+
+function saveProfBW(){
+  const inp=document.getElementById('profBwInp');
+  if(inp){saveBodyWeight(inp.value);showToast('✅ Poids de corps sauvegardé');}
+}
+
+function saveProfAge(){
+  const inp=document.getElementById('profAgeInp');
+  if(inp){saveAge(parseInt(inp.value)||25);showToast('✅ Âge sauvegardé');}
+}
+
+function confirmReset(){
+  const html=`<div class="modal-overlay" id="resetModal" onclick="if(event.target.id==='resetModal')closeModal()">
+    <div class="modal-box" style="max-width:360px">
+      <div class="modal-hdr"><div class="modal-title" style="color:var(--red)">⚠️ Confirmer la réinitialisation</div></div>
+      <div style="font-size:13px;color:var(--dim);margin:12px 0 20px;line-height:1.6">
+        Tu es sur le point de supprimer <b style="color:var(--text)">toutes tes données</b> définitivement.<br><br>
+        Séances · Records · Tonnage · Streak · Check-ins · Tout.
+      </div>
+      <div style="display:flex;gap:10px">
+        <button class="run-done-btn" style="flex:1;background:none;border-color:var(--border);color:var(--muted)" onclick="closeModal()">Annuler</button>
+        <button class="btn-danger" style="flex:1" onclick="executeReset()">Oui, tout effacer</button>
+      </div>
+    </div>
+  </div>`;
+  document.body.insertAdjacentHTML('beforeend',html);
+}
+
+function executeReset(){
+  const prof=getProfile();
+  localStorage.removeItem('fitcore');
+  saveProfile({...prof,since:todayKey()});
+  closeModal();
+  showToast('✅ Données réinitialisées');
+  updateStreak();updateReg();
+  renderProfile();
+}
+
+function closeModal(){
+  ['warmupModal','readinessModal','resetModal'].forEach(id=>{
+    const m=document.getElementById(id);if(m)m.remove();
+  });
+}
+
+const TABS=['today','week','stats','cardio','profile'];
 function switchTab(name){
   TABS.forEach(t=>{
     document.getElementById('tab-'+t).classList.toggle('active',t===name);
@@ -1073,10 +1242,16 @@ function switchTab(name){
   if(name==='stats')renderStats();
   if(name==='week')renderWeek();
   if(name==='cardio')renderCardio();
+  if(name==='profile')renderProfile();
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
 function init(){
+  const d=gs();
+  if(!d.profile||!d.profile.since){
+    const prof=getProfile();
+    if(!prof.since)saveProfile({since:todayKey()});
+  }
   renderToday();
   renderWeek();
   updateStreak();
