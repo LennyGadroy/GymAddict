@@ -11,6 +11,7 @@ L'application est déjà pleinement fonctionnelle et permet de gérer ses entra�
 ### 📋 Gestion de l'Entraînement
 - **Programme Hybride Pré-intégré** : Un planning complet alternant séances de musculation (Push, Pull, Legs, Dos/Épaules) et séances de course (Fractionné HIIT, Tempo, Endurance).
 - **Suivi Précis des Séries** : Interface intuitive pour saisir les poids et les répétitions en un clic.
+- **Suivi Cardio & Zones d'Effort** : Gestion des séances de course avec suivi de la durée, distance et RPE, couplé à une indication des zones de travail (Zone 1 à Zone 5).
 - **Détection de Records (PR)** : Alerte visuelle immédiate ("🏆 NOUVEAU RECORD") lorsque vous dépassez vos performances précédentes sur un exercice.
 - **Minuteur de Repos** : Chronomètre intégré avec ajout rapide de temps (+30s) pour optimiser la récupération entre les séries.
 - **Barre de Progression** : Visualisation en temps réel de l'avancement de votre séance.
@@ -22,11 +23,12 @@ L'application est déjà pleinement fonctionnelle et permet de gérer ses entra�
 
 ## 2. Visualisation de Données Avancée
 - **Heatmap de Régularité** : Un calendrier de type GitHub avec des carrés de couleur dont l'intensité varie selon la charge de travail de la séance.
-- **Graphique de Tonnage (Chart.js)** : Visualisation de la courbe de "Surcharge Progressive" via l'évolution de votre tonnage total au fil des semaines.
+- **Graphiques de Tonnage et Radar (Chart.js)** : Visualisation de la courbe de "Surcharge Progressive" (évolution du tonnage) et d'un **graphique Radar** détaillé pour l'analyse de la répartition du volume par groupe musculaire.
 
-## 3. Gamification et Force Relative
+## 3. Gamification, Force Relative et Profil
 - **Ratio de Force "Bodyweight"** : Calcul automatique de vos performances en fonction de votre poids de corps (ex: "Squat à 1.5x BW").
 - **Équivalences de Tonnage "Fun"** : Conversion de votre volume total de séance en objets réels (ex: "Aujourd'hui, vous avez soulevé l'équivalent d'un éléphant d'Afrique !").
+- **Profil Utilisateur Personnalisable** : Choix d'un avatar (💪, 🐺, 🚀...), pseudo, et saisie de l'âge et du poids de corps.
 
 ## 4. Gestion de la Récupération
 - **Readiness Score** : Questionnaire rapide avant séance (Sommeil, Stress, Douleurs sur 5) pour évaluer votre état de forme.
@@ -57,5 +59,5 @@ L'application ne nécessite aucune installation de serveur. Elle utilise **HTML5
 ## 🧬 Technologies Utilisées
 - **HTML5 / CSS3** (Variables CSS, Flexbox, Grid)
 - **Vanilla JavaScript** (ES6+)
-- **Chart.js** (pour les futurs graphiques)
+- **Chart.js** (Graphiques linéaires et radar)
 - **Google Fonts** (Rajdhani, JetBrains Mono, Nunito)
