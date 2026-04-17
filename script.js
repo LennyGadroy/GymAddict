@@ -1,42 +1,93 @@
-const EX_LUNDI_JEUDI = [
-  {id:"tractions",      name:"Tractions",                               sets:3,repsLabel:"Max / 10",    defaultReps:10, type:"compound", muscles:["dos"],      restSec:180},
-  {id:"dips",           name:"Dips",                                    sets:3,repsLabel:"Max / 10-12",  defaultReps:10, type:"compound", muscles:["triceps"],  restSec:180},
-  {id:"dev_couche",     name:"Développé couché (barre / haltères)",     sets:4,repsLabel:"8-10 reps",    defaultReps:10, type:"compound", muscles:["pecs"],     restSec:180},
-  {id:"chest_fly",      name:"Chest fly (papillon)",                    sets:3,repsLabel:"12-15 reps",   defaultReps:12, type:"isolation",muscles:["pecs"],     restSec:90},
-  {id:"curl_pupitre",   name:"Curl Pupitre / Curl Marteau",             sets:3,repsLabel:"Max / 10",     defaultReps:10, type:"compound", muscles:["biceps"],   restSec:180},
-  {id:"curl_ez",        name:"Curl Barre EZ",                           sets:3,repsLabel:"10-12 reps",   defaultReps:10, type:"isolation",muscles:["biceps"],   restSec:90},
-  {id:"ext_triceps",    name:"Extension triceps (poulie haute)",         sets:3,repsLabel:"12-15 reps",   defaultReps:12, type:"isolation",muscles:["triceps"], restSec:90},
-  {id:"curl_biceps",    name:"Curl Biceps (poulie basse)",              sets:3,repsLabel:"12-15 reps",   defaultReps:12, type:"isolation",muscles:["biceps"],   restSec:90},
-  {id:"pompes",         name:"Pompes",                                  sets:3,repsLabel:"10-15 reps",   defaultReps:12, type:"isolation",muscles:["pecs"],     restSec:90},
-  {id:"releves_jambes", name:"Relevés de jambes",                       sets:4,repsLabel:"12-15 reps",   defaultReps:12, type:"isolation",muscles:["abdos"],    restSec:90},
-  {id:"gainage",        name:"Gainage",                                 sets:3,repsLabel:"60+ secondes", defaultReps:60, type:"isolation",muscles:["abdos"],    restSec:60, isTime:true},
+const EX_LUNDI = [
+  {id:"cardio_lundi", name:"Cardio (Tapis/Elliptique)", sets:1, repsLabel:"5 min", defaultReps:5, type:"echauffement", muscles:["cardio"], restSec:0, isTime:true},
+  {id:"mobilite_lundi", name:"Rotations bras, poignets, ouvertures élastique", sets:1, repsLabel:"1 série", defaultReps:1, type:"echauffement", muscles:["epaules", "pecs"], restSec:0},
+  {id:"dev_pec_echauff", name:"Développé couché (à vide)", sets:2, repsLabel:"15 reps", defaultReps:15, type:"echauffement", muscles:["pecs", "triceps"], restSec:60},
+
+  {id:"dev_couche", name:"Développé couché", sets:4, repsLabel:"8-12 reps", defaultReps:10, type:"compound", muscles:["pecs"], restSec:120},
+  {id:"dev_incline", name:"Développé incliné (haltères ou machine)", sets:3, repsLabel:"10-12 reps", defaultReps:11, type:"compound", muscles:["pecs"], restSec:120},
+  {id:"ecarte_poulie_haute", name:"Écartés à la poulie haute", sets:3, repsLabel:"12-15 reps", defaultReps:15, type:"isolation", muscles:["pecs"], restSec:90},
+  {id:"bar_front", name:"Barre au front (EZ Bar)", sets:3, repsLabel:"10-12 reps", defaultReps:11, type:"isolation", muscles:["triceps"], restSec:90},
+  {id:"ext_triceps_poulie", name:"Extensions Triceps (Corde)", sets:3, repsLabel:"12-15 reps", defaultReps:15, type:"isolation", muscles:["triceps"], restSec:90},
+  {id:"dips", name:"Dips", sets:3, repsLabel:"Échec", defaultReps:12, type:"compound", muscles:["pecs", "triceps"], restSec:120},
+
+  {id:"etirement_pecs", name:"Étirement Pectoraux", sets:1, repsLabel:"30 sec / côté", defaultReps:30, type:"etirement", muscles:["pecs"], restSec:0, isTime:true},
+  {id:"etirement_triceps", name:"Étirement Triceps", sets:1, repsLabel:"30 sec / côté", defaultReps:30, type:"etirement", muscles:["triceps"], restSec:0, isTime:true}
 ];
 
-const EX_MARDI_VENDREDI = [
-  {id:"tirage",         name:"Tirage vertical",                         sets:4,repsLabel:"Max / 10-12",  defaultReps:10, type:"compound", muscles:["dos"],      restSec:180},
-  {id:"rowing_barre",   name:"Rowing barre / machine",                  sets:3,repsLabel:"10-12 reps",   defaultReps:10, type:"compound", muscles:["dos"],      restSec:180},
-  {id:"face_pulls",     name:"Face pulls (poulie haute)",               sets:3,repsLabel:"15 reps",      defaultReps:15, type:"isolation",muscles:["epaules"], restSec:90},
-  {id:"dev_militaire",  name:"Développé militaire haltères",             sets:4,repsLabel:"8-10 reps",    defaultReps:10, type:"compound", muscles:["epaules"], restSec:180},
-  {id:"elev_laterales", name:"Élévations latérales haltères",           sets:4,repsLabel:"15 reps",      defaultReps:15, type:"isolation",muscles:["epaules"], restSec:90},
+const EX_MARDI = [
+  {id:"cardio_mardi", name:"Rameur", sets:1, repsLabel:"5 min", defaultReps:5, type:"echauffement", muscles:["cardio", "dos"], restSec:0, isTime:true},
+  {id:"mobilite_mardi", name:"Rotations épaules, Cat/Cow", sets:1, repsLabel:"1 série", defaultReps:1, type:"echauffement", muscles:["dos", "epaules"], restSec:0},
+  {id:"tirage_poitrine_echauff", name:"Tirage poitrine (léger)", sets:2, repsLabel:"15 reps", defaultReps:15, type:"echauffement", muscles:["dos"], restSec:60},
+
+  {id:"tractions", name:"Tractions", sets:4, repsLabel:"Échec", defaultReps:10, type:"compound", muscles:["dos", "biceps"], restSec:120},
+  {id:"tirage_horizontal", name:"Tirage Horizontal", sets:4, repsLabel:"8-12 reps", defaultReps:10, type:"compound", muscles:["dos"], restSec:120},
+  {id:"tirage_vertical", name:"Tirage Vertical (Poulie Haute)", sets:3, repsLabel:"10-12 reps", defaultReps:11, type:"compound", muscles:["dos"], restSec:120},
+  {id:"pull_over_poulie", name:"Pull-over à la poulie haute", sets:3, repsLabel:"12-15 reps", defaultReps:15, type:"isolation", muscles:["dos"], restSec:90},
+  {id:"curl_barre_ez", name:"Curl à la Barre EZ", sets:3, repsLabel:"10-12 reps", defaultReps:11, type:"isolation", muscles:["biceps"], restSec:90},
+  {id:"curl_incline", name:"Curl Haltères Incliné", sets:3, repsLabel:"12-15 reps", defaultReps:15, type:"isolation", muscles:["biceps"], restSec:90},
+
+  {id:"etirement_dos", name:"Étirement Grand Dorsal", sets:1, repsLabel:"30 sec", defaultReps:30, type:"etirement", muscles:["dos"], restSec:0, isTime:true},
+  {id:"etirement_biceps", name:"Étirement Biceps", sets:1, repsLabel:"30 sec / côté", defaultReps:30, type:"etirement", muscles:["biceps"], restSec:0, isTime:true}
 ];
 
 const EX_MERCREDI = [
-  {id:"dev_militaire",  name:"Développé militaire haltères",             sets:4,repsLabel:"8-10 reps",    defaultReps:10, type:"compound", muscles:["epaules"], restSec:180},
-  {id:"elev_laterales", name:"Élévations latérales haltères",           sets:4,repsLabel:"15 reps",      defaultReps:15, type:"isolation",muscles:["epaules"], restSec:90},
-  {id:"crunch_poulie",  name:"Crunch à la poulie haute",                sets:4,repsLabel:"15-20 reps",   defaultReps:15, type:"isolation",muscles:["abdos"],    restSec:90},
-  {id:"releves_jambes", name:"Relevés de jambes",                       sets:4,repsLabel:"12-15 reps",   defaultReps:12, type:"isolation",muscles:["abdos"],    restSec:90},
-  {id:"russian_twists", name:"Russian twists avec poids",               sets:3,repsLabel:"20 reps (x2)", defaultReps:20, type:"isolation",muscles:["abdos"],    restSec:60},
-  {id:"gainage",        name:"Gainage (Planche)",                       sets:3,repsLabel:"60+ secondes", defaultReps:60, type:"isolation",muscles:["abdos"],    restSec:60, isTime:true},
+  {id:"cardio_mercredi", name:"Vélo / Elliptique", sets:1, repsLabel:"5-10 min", defaultReps:5, type:"echauffement", muscles:["cardio", "jambes"], restSec:0, isTime:true},
+  {id:"mobilite_mercredi", name:"Rotations hanches/chevilles, Fentes latérales", sets:1, repsLabel:"1 série", defaultReps:1, type:"echauffement", muscles:["jambes"], restSec:0},
+  {id:"squat_echauff", name:"Squat (Poids du corps puis vide)", sets:2, repsLabel:"15 reps", defaultReps:15, type:"echauffement", muscles:["jambes"], restSec:60},
+
+  {id:"squat", name:"Squat (Barre)", sets:4, repsLabel:"6-10 reps", defaultReps:8, type:"compound", muscles:["jambes"], restSec:120},
+  {id:"leg_press", name:"Presse à Cuisses", sets:3, repsLabel:"10-12 reps", defaultReps:11, type:"compound", muscles:["jambes"], restSec:120},
+  {id:"fentes_marchees", name:"Fentes Marchées (Haltères)", sets:3, repsLabel:"10-12 reps / jambe", defaultReps:11, type:"compound", muscles:["jambes"], restSec:120},
+  {id:"leg_extension", name:"Leg Extension", sets:3, repsLabel:"12-15 reps", defaultReps:15, type:"isolation", muscles:["jambes"], restSec:90},
+  {id:"leg_curl", name:"Leg Curl", sets:3, repsLabel:"12-15 reps", defaultReps:15, type:"isolation", muscles:["jambes"], restSec:90},
+  {id:"mollets", name:"Mollets Debout Machine", sets:4, repsLabel:"15-20 reps", defaultReps:18, type:"isolation", muscles:["mollets"], restSec:90},
+
+  {id:"etirement_quads", name:"Étirement Quadriceps", sets:1, repsLabel:"30 sec / côté", defaultReps:30, type:"etirement", muscles:["jambes"], restSec:0, isTime:true},
+  {id:"etirement_ischios", name:"Étirement Ischio-jambiers", sets:1, repsLabel:"30 sec", defaultReps:30, type:"etirement", muscles:["jambes"], restSec:0, isTime:true},
+  {id:"etirement_mollets", name:"Étirement Mollets", sets:1, repsLabel:"30 sec / côté", defaultReps:30, type:"etirement", muscles:["mollets"], restSec:0, isTime:true}
+];
+
+const EX_JEUDI = [
+  {id:"cardio_jeudi", name:"Tapis / Elliptique", sets:1, repsLabel:"5 min", defaultReps:5, type:"echauffement", muscles:["cardio"], restSec:0, isTime:true},
+  {id:"mobilite_jeudi", name:"Rotations épaules, Coiffe des rotateurs", sets:1, repsLabel:"1 série", defaultReps:1, type:"echauffement", muscles:["epaules"], restSec:0},
+  {id:"dev_militaire_echauff", name:"Développé Militaire (léger)", sets:2, repsLabel:"15 reps", defaultReps:15, type:"echauffement", muscles:["epaules"], restSec:60},
+
+  {id:"dev_militaire", name:"Développé Militaire Assis", sets:4, repsLabel:"8-12 reps", defaultReps:10, type:"compound", muscles:["epaules"], restSec:120},
+  {id:"elevations_laterales", name:"Élévations Latérales", sets:4, repsLabel:"12-15 reps", defaultReps:15, type:"isolation", muscles:["epaules"], restSec:90},
+  {id:"oiseau_poulie", name:"Oiseau à la Poulie Haute", sets:3, repsLabel:"15-20 reps", defaultReps:18, type:"isolation", muscles:["epaules"], restSec:90},
+  {id:"tirage_menton", name:"Tirage Menton", sets:3, repsLabel:"10-12 reps", defaultReps:11, type:"compound", muscles:["epaules", "trapezes"], restSec:120},
+  {id:"shrugs", name:"Shrugs", sets:3, repsLabel:"12-15 reps", defaultReps:15, type:"isolation", muscles:["trapezes"], restSec:90},
+
+  {id:"etirement_epaules", name:"Étirement Épaules", sets:1, repsLabel:"30 sec / côté", defaultReps:30, type:"etirement", muscles:["epaules"], restSec:0, isTime:true},
+  {id:"etirement_trapezes", name:"Étirement Trapèzes", sets:1, repsLabel:"30 sec / côté", defaultReps:30, type:"etirement", muscles:["trapezes"], restSec:0, isTime:true}
+];
+
+const EX_VENDREDI = [
+  {id:"cardio_vendredi", name:"Cardio", sets:1, repsLabel:"5 min", defaultReps:5, type:"echauffement", muscles:["cardio"], restSec:0, isTime:true},
+  {id:"mobilite_vendredi", name:"Échauffement global haut du corps", sets:1, repsLabel:"1 série", defaultReps:1, type:"echauffement", muscles:["pecs", "dos", "epaules"], restSec:0},
+  {id:"dev_incline_echauff", name:"Développé incliné (léger)", sets:2, repsLabel:"15 reps", defaultReps:15, type:"echauffement", muscles:["pecs"], restSec:60},
+
+  {id:"dev_incline_rappel", name:"Développé Incliné Haltères", sets:3, repsLabel:"12-15 reps", defaultReps:15, type:"compound", muscles:["pecs"], restSec:90},
+  {id:"tirage_vertical_rappel", name:"Tirage Vertical Poulie Haute", sets:3, repsLabel:"12-15 reps", defaultReps:15, type:"compound", muscles:["dos"], restSec:90},
+  {id:"tirage_horizontal_rappel", name:"Tirage Horizontal Machine", sets:3, repsLabel:"12-15 reps / bras", defaultReps:15, type:"isolation", muscles:["dos"], restSec:90},
+  {id:"curl_marteau", name:"Curl Marteau (Haltères)", sets:3, repsLabel:"12-15 reps", defaultReps:15, type:"isolation", muscles:["biceps"], restSec:90},
+  {id:"ext_triceps_overhead", name:"Extensions Triceps (Au-dessus tête)", sets:3, repsLabel:"12-15 reps", defaultReps:15, type:"isolation", muscles:["triceps"], restSec:90},
+  {id:"abdos", name:"Abdominaux (Circuit)", sets:4, repsLabel:"Échec", defaultReps:20, type:"isolation", muscles:["abdos"], restSec:60},
+
+  {id:"etirement_full_1", name:"Étirement Pectoraux & Dos", sets:1, repsLabel:"30 sec / groupe", defaultReps:30, type:"etirement", muscles:["pecs", "dos"], restSec:0, isTime:true},
+  {id:"etirement_full_2", name:"Étirement Biceps & Triceps", sets:1, repsLabel:"30 sec / groupe", defaultReps:30, type:"etirement", muscles:["biceps", "triceps"], restSec:0, isTime:true}
 ];
 
 const PROGRAM = {
-  lundi: {label:"Lundi", day:1, icon:"💪", fullName:"Push & Pull — Polyvalent", type:"gym", exercises: EX_LUNDI_JEUDI},
-  mardi: {label:"Mardi", day:2, icon:"🏋️", fullName:"Dos & Épaules", type:"gym+run", exercises: EX_MARDI_VENDREDI, running:{name:"⚡ Fractionné HIIT",steps:["🔥 10 min d'échauffement lent","⚡ 10-15 × : 30 sec sprint / 30 sec marche","🌬️ 5 min retour au calme"],targetDuration:30}},
+  lundi: {label:"Lundi", day:1, icon:"💪", fullName:"Pectoraux & Triceps", type:"gym", exercises: EX_LUNDI},
+  mardi: {label:"Mardi", day:2, icon:"🏋️", fullName:"Dos & Épaules", type:"gym+run", exercises: EX_MARDI, running:
+    {name:"🏃 Run 5km",steps:["🎯 5km : allure normale","💨 Légèrement inconfortable mais constant","⏱️ Maintiens le rythme jusqu'au bout"],targetDuration:35,targetDistance:5}},
   mercredi: {label:"Mercredi", day:3, icon:"🎯", fullName:"Core & Épaules", type:"gym", exercises: EX_MERCREDI},
-  jeudi: {label:"Jeudi", day:4, icon:"🔥", fullName:"Push & Pull — Polyvalent", type:"gym+run",exercises: EX_LUNDI_JEUDI, running:{name:"🏃 Course Tempo 5km",steps:["🎯 5km à allure soutenue","💨 Légèrement inconfortable mais constant","⏱️ Maintiens le rythme jusqu'au bout"],targetDuration:35,targetDistance:5}},
-  vendredi: {label:"Vendredi", day:5, icon:"💥", fullName:"Dos & Épaules", type:"gym", exercises: EX_MARDI_VENDREDI},
+  jeudi: {label:"Jeudi", day:4, icon:"🔥", fullName:"Push & Pull — Polyvalent", type:"gym+run",exercises: EX_JEUDI, running:
+    {name:"🏃 Run 5km",steps:["🎯 5km : allure normale","💨 Légèrement inconfortable mais constant","⏱️ Maintiens le rythme jusqu'au bout"],targetDuration:35,targetDistance:5}},
+  vendredi: {label:"Vendredi", day:5, icon:"💥", fullName:"Dos & Épaules", type:"gym", exercises: EX_VENDREDI},
   samedi: {label:"Samedi", day:6, icon:"😴", fullName:"Repos Total", type:"rest", exercises:[]},
-  dimanche: {label:"Dimanche", day:0, icon:"🌅", fullName:"Sortie Longue (Optionnel)", type:"run", exercises:[], running:{name:"🌿 Endurance Fondamentale — Zone 2",steps:["🕐 45–60 min à rythme très lent","💬 Tu dois pouvoir tenir une conversation","🔥 Optimal pour brûler les graisses"],targetDuration:55}}
+  dimanche: {label:"Dimanche", day:0, icon:"🌅", fullName:"Sortie Longue (Optionnel)", type:"run", exercises:[]},
 };
 
 const DAYS_ORDER = ['lundi','mardi','mercredi','jeudi','vendredi','samedi','dimanche'];
