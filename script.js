@@ -4,11 +4,13 @@ const EX_LUNDI = [
   {id:"dev_pec_echauff", name:"Développé couché (à vide)", sets:2, repsLabel:"15 reps", defaultReps:15, type:"echauffement", muscles:["pecs", "triceps"], restSec:60},
 
   {id:"dev_couche", name:"Développé couché", sets:4, repsLabel:"8-12 reps", defaultReps:10, type:"compound", muscles:["pecs"], restSec:120},
-  {id:"dev_incline", name:"Développé incliné (haltères ou machine)", sets:3, repsLabel:"10-12 reps", defaultReps:11, type:"compound", muscles:["pecs"], restSec:120},
-  {id:"ecarte_poulie_haute", name:"Écartés à la poulie haute", sets:3, repsLabel:"12-15 reps", defaultReps:15, type:"isolation", muscles:["pecs"], restSec:90},
-  {id:"bar_front", name:"Barre au front (EZ Bar)", sets:3, repsLabel:"10-12 reps", defaultReps:11, type:"isolation", muscles:["triceps"], restSec:90},
+  {id:"dev_incline", name:"Développé incliné (haltères ou machine)", sets:3, repsLabel:"10-12 reps", defaultReps:10, type:"compound", muscles:["pecs"], restSec:120},
+  {id:"bar_front", name:"Barre au front (EZ Bar)", sets:3, repsLabel:"10-12 reps", defaultReps:10, type:"isolation", muscles:["triceps"], restSec:90},
+  {id:"curl_ez_bar", name:"Curl (EZ Bar)", sets:3, repsLabel:"12-15 reps", defaultReps:12, type:"isolation", muscles:["triceps"], restSec:90},
   {id:"ext_triceps_poulie", name:"Extensions Triceps (Corde)", sets:3, repsLabel:"12-15 reps", defaultReps:15, type:"isolation", muscles:["triceps"], restSec:90},
+  {id:"ecarte_poulie_haute", name:"Écartés à la poulie haute", sets:3, repsLabel:"12-15 reps", defaultReps:15, type:"isolation", muscles:["pecs"], restSec:90},
   {id:"dips", name:"Dips", sets:3, repsLabel:"Échec", defaultReps:12, type:"compound", muscles:["pecs", "triceps"], restSec:120},
+  {id:"pompes", name:"Pompes", sets:3, repsLabel:"10-12 reps", defaultReps:10, type:"isolation", muscles:["pecs"], restSec:90},
 
   {id:"etirement_pecs", name:"Étirement Pectoraux", sets:1, repsLabel:"30 sec / côté", defaultReps:30, type:"etirement", muscles:["pecs"], restSec:0, isTime:true},
   {id:"etirement_triceps", name:"Étirement Triceps", sets:1, repsLabel:"30 sec / côté", defaultReps:30, type:"etirement", muscles:["triceps"], restSec:0, isTime:true}
