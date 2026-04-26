@@ -3,6 +3,7 @@ const EX_LUNDI = [
   {id:"mobilite_lundi", name:"Rotations bras, poignets, ouvertures élastique", sets:1, repsLabel:"1 série", defaultReps:1, type:"echauffement", muscles:["epaules", "pecs"], restSec:0},
   {id:"dev_pec_echauff", name:"Développé couché (à vide)", sets:2, repsLabel:"15 reps", defaultReps:15, type:"echauffement", muscles:["pecs", "triceps"], restSec:60},
 
+  {id:"dips", name:"Dips", sets:3, repsLabel:"Échec", defaultReps:12, type:"compound", muscles:["pecs", "triceps"], restSec:120},
   {id:"dev_couche", name:"Développé couché", sets:4, repsLabel:"8-12 reps", defaultReps:10, type:"compound", muscles:["pecs"], restSec:120},
   {id:"dev_incline", name:"Développé incliné (haltères ou machine)", sets:3, repsLabel:"10-12 reps", defaultReps:10, type:"compound", muscles:["pecs"], restSec:120},
   {id:"bar_front", name:"Barre au front (EZ Bar)", sets:3, repsLabel:"10-12 reps", defaultReps:10, type:"isolation", muscles:["triceps"], restSec:90},
@@ -10,7 +11,6 @@ const EX_LUNDI = [
   {id:"ext_triceps_poulie", name:"Extensions Triceps (Corde)", sets:3, repsLabel:"12-15 reps", defaultReps:15, type:"isolation", muscles:["triceps"], restSec:90},
   {id:"ecarte_poulie_haute", name:"Écartés à la poulie haute", sets:3, repsLabel:"12-15 reps", defaultReps:15, type:"isolation", muscles:["pecs"], restSec:90},
   {id:"papillon_pecs", name:"Papillons Pecs", sets:3, repsLabel:"10-12 reps", defaultReps:10, type:"isolation", muscles:["pecs"], restSec:120},
-  {id:"dips", name:"Dips", sets:3, repsLabel:"Échec", defaultReps:12, type:"compound", muscles:["pecs", "triceps"], restSec:120},
   {id:"pompes", name:"Pompes", sets:3, repsLabel:"10-12 reps", defaultReps:10, type:"isolation", muscles:["pecs"], restSec:90},
 
   {id:"etirement_pecs", name:"Étirement Pectoraux", sets:1, repsLabel:"30 sec / côté", defaultReps:30, type:"etirement", muscles:["pecs"], restSec:0, isTime:true},
