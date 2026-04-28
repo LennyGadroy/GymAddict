@@ -232,3 +232,20 @@ select.si{text-align:left;background-image:none;}
 .ready-item{margin-bottom:20px;}
 .bnav .nbtn{font-size:9px;padding:8px 2px 6px;}
 .bnav .nbtn .ni{font-size:19px;}
+.prog-switch-btn{background:rgba(255,255,255,.06);border:1px solid var(--border);color:var(--dim);border-radius:20px;padding:5px 12px;font-family:var(--fb);font-size:11px;font-weight:600;cursor:pointer;white-space:nowrap;transition:all .2s;touch-action:manipulation;}
+.prog-switch-btn:active{background:rgba(255,255,255,.12);color:var(--text);}
+.prog-override-badge{background:rgba(251,146,60,.12);border:1px solid var(--orange);color:var(--orange);border-radius:20px;padding:2px 8px;font-size:9px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;}
+.prog-pick-box{max-height:82vh;overflow-y:auto;padding-bottom:8px;}
+.prog-pick-hint{font-size:12px;color:var(--dim);margin-bottom:14px;line-height:1.5;}
+.prog-pick-list{display:flex;flex-direction:column;gap:8px;}
+.prog-pick-item{display:flex;align-items:center;gap:12px;background:var(--card2);border:1.5px solid var(--border);border-radius:var(--r);padding:12px 14px;cursor:pointer;transition:all .15s;touch-action:manipulation;}
+.prog-pick-item:active{transform:scale(.98);}
+.prog-pick-item.selected{border-color:var(--green);background:var(--gd);}
+.prog-pick-icon{font-size:26px;flex-shrink:0;width:34px;text-align:center;}
+.prog-pick-info{flex:1;min-width:0;}
+.prog-pick-name{font-size:13px;font-weight:600;color:var(--text);}
+.prog-pick-meta{font-size:11px;color:var(--dim);margin-top:2px;}
+.prog-pick-check{color:var(--green);font-size:18px;font-weight:900;flex-shrink:0;margin-left:auto;}
+.prog-pick-reset{width:100%;margin-top:12px;background:none;border:1px solid var(--border);color:var(--muted);border-radius:var(--rs);padding:11px;font-family:var(--fb);font-size:13px;cursor:pointer;transition:all .2s;}
+.prog-pick-reset:active{background:rgba(255,255,255,.05);}
+.rest-day .prog-switch-btn{margin-top:20px;padding:10px 20px;font-size:13px;border-radius:var(--rs);display:block;margin-left:auto;margin-right:auto;}

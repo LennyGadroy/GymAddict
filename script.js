@@ -176,6 +176,71 @@ function saveExNote(dateKey,exId,field,val){
   ss(d);triggerSave();
 }
 
+// ── Programme override par date ──────────────────────────────────────────────
+function getDayProgramOverride(dateKey){
+  const d=gs();return (d.dayProgram&&d.dayProgram[dateKey])||null;
+}
+function saveDayProgramOverride(dateKey,progKey){
+  const d=gs();
+  if(!d.dayProgram)d.dayProgram={};
+  if(progKey===null){delete d.dayProgram[dateKey];}
+  else{d.dayProgram[dateKey]=progKey;}
+  ss(d);triggerSave();
+}
+function getEffectiveDayProgram(dateKey){
+  const override=getDayProgramOverride(dateKey);
+  if(override&&PROGRAM[override])return{key:override,prog:PROGRAM[override]};
+  const dt=new Date(dateKey+'T12:00:00');
+  const dayName=DAY_JS_MAP[dt.getDay()];
+  return{key:dayName,prog:PROGRAM[dayName]};
+}
+
+function showProgramPicker(dateKey){
+  const current=getDayProgramOverride(dateKey);
+  const defaultDayName=DAY_JS_MAP[new Date(dateKey+'T12:00:00').getDay()];
+  let opts='';
+  DAYS_ORDER.forEach(key=>{
+    const p=PROGRAM[key];
+    const isSelected=current?current===key:key===defaultDayName;
+    const isDefault=key===defaultDayName;
+    const typeLabel=p.type==='rest'?'😴 Repos':p.type==='run'?'🏃 Running':p.type==='gym+run'?'🏋️+🏃 Salle+Run':'🏋️ Salle';
+    opts+=`<div class="prog-pick-item${isSelected?' selected':''}" onclick="selectDayProgram('${dateKey}','${key}')">
+      <span class="prog-pick-icon">${p.icon}</span>
+      <div class="prog-pick-info">
+        <div class="prog-pick-name">${p.label} — ${p.fullName}</div>
+        <div class="prog-pick-meta">${typeLabel}${p.exercises.length?` · ${p.exercises.length} exercices`:''}${isDefault?' · <span style="color:var(--green)">Par défaut</span>':''}</div>
+      </div>
+      ${isSelected?'<span class="prog-pick-check">✓</span>':''}
+    </div>`;
+  });
+  const html=`<div class="modal-overlay" id="progPickerModal" onclick="if(event.target.id==='progPickerModal')closeProgramPicker()">
+    <div class="modal-box prog-pick-box">
+      <div class="modal-hdr">
+        <div class="modal-title">🗓️ Choisir un programme</div>
+        <button class="drawer-close" onclick="closeProgramPicker()">✕</button>
+      </div>
+      <div class="prog-pick-hint">Remplace le programme d'aujourd'hui par celui de ton choix.</div>
+      <div class="prog-pick-list">${opts}</div>
+      ${current?`<button class="prog-pick-reset" onclick="resetDayProgram('${dateKey}')">↩️ Rétablir le programme par défaut</button>`:''}
+    </div>
+  </div>`;
+  document.body.insertAdjacentHTML('beforeend',html);
+}
+function closeProgramPicker(){const m=document.getElementById('progPickerModal');if(m)m.remove();}
+function selectDayProgram(dateKey,progKey){
+  saveDayProgramOverride(dateKey,progKey);
+  closeProgramPicker();
+  renderToday();
+  showToast('📋 Programme : '+PROGRAM[progKey].fullName);
+}
+function resetDayProgram(dateKey){
+  saveDayProgramOverride(dateKey,null);
+  closeProgramPicker();
+  renderToday();
+  showToast('↩️ Programme par défaut rétabli');
+}
+// ────────────────────────────────────────────────────────────────────────────
+
 function calc1RM(weight,reps){
   if(!weight||!reps||reps<=0)return 0;
   const w=parseFloat(weight),r=parseInt(reps);
@@ -226,8 +291,8 @@ function computeReadinessScore(r){
 }
 
 function getTodayTonnage(){
-  const dateKey=todayKey(),dayName=getDayName();
-  const prog=PROGRAM[dayName];const d=gs();
+  const dateKey=todayKey();
+  const {prog}=getEffectiveDayProgram(dateKey);const d=gs();
   if(!prog||!d.workouts||!d.workouts[dateKey])return 0;
   let total=0;
   prog.exercises.forEach(ex=>{
@@ -547,7 +612,8 @@ function checkAndShowPR(exId,exName,weight,reps){
 }
 
 function getDayProgress(dateKey,dayName){
-  const prog=PROGRAM[dayName];
+  const override=getDayProgramOverride(dateKey);
+  const prog=(override&&PROGRAM[override])||PROGRAM[dayName];
   if(!prog||prog.type==='rest'||prog.exercises.length===0)return{done:0,total:0,pct:0};
   let total=0,done=0;
   prog.exercises.forEach(ex=>{
@@ -718,13 +784,18 @@ function updateDayProgressBar(dateKey){
 }
 
 function renderToday(){
-  const dayName=getDayName();
-  const prog=PROGRAM[dayName];
   const dateKey=todayKey();
+  const {key:dayName,prog}=getEffectiveDayProgram(dateKey);
+  const isOverridden=getDayProgramOverride(dateKey)!==null;
   const el=document.getElementById('today-content');
   if(!prog){el.innerHTML='<div class="empty">Programme indisponible</div>';return;}
   if(prog.type==='rest'){
-    el.innerHTML=`<div class="rest-day"><div class="rest-emoji">😴</div><div class="rest-msg">REPOS TOTAL</div><div class="rest-sub">Laisse ton corps récupérer.<br>La récupération c'est aussi de l'entraînement !</div></div>`;
+    el.innerHTML=`<div class="rest-day">
+      <div class="rest-emoji">😴</div>
+      <div class="rest-msg">REPOS TOTAL</div>
+      <div class="rest-sub">Laisse ton corps récupérer.<br>La récupération c'est aussi de l'entraînement !</div>
+      <button class="prog-switch-btn" onclick="showProgramPicker('${dateKey}')">🔄 Changer de programme</button>
+    </div>`;
     return;
   }
   const p=getDayProgress(dateKey,dayName);
@@ -743,12 +814,20 @@ function renderToday(){
   const tonnage=getTodayTonnage();
   const eq=getFunEquivalent(tonnage);
   let html=`
-  <div class="chip">📅 ${prog.label} — ${new Date().toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'})}</div>
+  <div class="chip">📅 ${new Date().toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'})}</div>
   <div class="card green-glow">
     <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:4px">
-      <div><div class="card-title">${prog.icon} ${prog.fullName}</div>
-      <div class="card-sub">${prog.type==='gym+run'?'🏋️ Salle + 🏃 Running':'🏋️ Salle de sport'}</div></div>
-      ${rBadgeHtml}
+      <div style="flex:1;min-width:0">
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+          <div class="card-title">${prog.icon} ${prog.fullName}</div>
+          ${isOverridden?`<span class="prog-override-badge">✏️ Modifié</span>`:''}
+        </div>
+        <div class="card-sub">${prog.type==='gym+run'?'🏋️ Salle + 🏃 Running':'🏋️ Salle de sport'}</div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
+        ${rBadgeHtml}
+        <button class="prog-switch-btn" onclick="showProgramPicker('${dateKey}')">🔄 Changer</button>
+      </div>
     </div>
     <div class="prog-txt" id="progtxt-${dateKey}">${p.done}/${p.total} séries · ${p.pct}%</div>
     <div class="prog-wrap"><div class="prog-fill" id="prog-${dateKey}" style="width:${p.pct}%"></div></div>
