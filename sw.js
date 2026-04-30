@@ -1,6 +1,6 @@
-const CACHE_NAME = 'gymaddict-v1';
-const CACHE_STATIC = 'gymaddict-static-v1';
-const CACHE_FONTS  = 'gymaddict-fonts-v1';
+const CACHE_version = 'ga-v1';
+const STATIC_CACHE  = `${CACHE_VERSION}-static`;
+const RUNTIME_CACHE = `${CACHE_VERSION}-runtime`;
 
 const STATIC_ASSETS = [
   './index.html',
