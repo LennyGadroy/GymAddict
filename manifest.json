@@ -1,7 +1,7 @@
 {
-  "name": "Gym Addict - Hybrid Tracker",
+  "name": "Gym Addict",
   "short_name": "GymAddict",
-  "description": "Suivi d'entraînement hybride : musculation & cardio",
+  "description": "Full assist app : Suivi d'entraînement",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
